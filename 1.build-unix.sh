@@ -38,6 +38,8 @@ rm -f release/bitcoind
 
 echo "Building gui client..."
 make distclean
+make -C bitcoin-qt/src -f makefile.unix clean USE_NATIVE_I2P=1
+make -C bitcoin-qt/src -f makefile.linux-mingw clean USE_NATIVE_I2P=1
 qmake
 make $JOB_FLAG $THREADS
 
@@ -45,17 +47,17 @@ if [ ! -f bitcoin-qt/bitcoin-qt ]; then
     echo "UNABLE TO FIND generated bitcoin-qt"
     exit 1
 fi
-
-mv -f bitcoin-qt/bitcoin-qt release
+cp -f bitcoin-qt/bitcoin-qt release
 
 echo "Building headless daemon..."
-make $JOB_FLAG $THREADS -C bitcoin-qt/src -f makefile.unix clean USE_NATIVE_I2P=1
+make distclean
+make -C bitcoin-qt/src -f makefile.unix clean USE_NATIVE_I2P=1
+make -C bitcoin-qt/src -f makefile.linux-mingw clean USE_NATIVE_I2P=1
 make $JOB_FLAG $THREADS -C bitcoin-qt/src -f makefile.unix USE_NATIVE_I2P=1
 
 if [ ! -f bitcoin-qt/src/bitcoind ]; then
     echo "UNABLE TO FIND generated bitcoind"
     exit 1
 fi
-
 strip bitcoin-qt/src/bitcoind
-mv -f bitcoin-qt/src/bitcoind release
+cp -f bitcoin-qt/src/bitcoind release
