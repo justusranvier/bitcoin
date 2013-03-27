@@ -40,7 +40,7 @@ echo "Building gui client..."
 make distclean
 make -C bitcoin-qt/src -f makefile.unix clean USE_NATIVE_I2P=1
 make -C bitcoin-qt/src -f makefile.linux-mingw clean USE_NATIVE_I2P=1
-qmake
+qmake USE_QRCODE=1
 make $JOB_FLAG $THREADS
 
 if [ ! -f bitcoin-qt/bitcoin-qt ]; then

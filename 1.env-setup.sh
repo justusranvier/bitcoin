@@ -15,7 +15,7 @@ SOURCE_DESTDIR=${DIRNAME}/dependencies
 
 #ENABLE_DEPS=("OPENSSL BDB MINIUPNPC BOOST ZLIB PNGLIB QT")
 #ENABLE_PLATFORMS=("mingw32 mingw64 linux64")
-ENABLE_DEPS=("OPENSSL BDB MINIUPNPC BOOST QT")
+ENABLE_DEPS=("OPENSSL BDB MINIUPNPC BOOST QT QR_ENCODE")
 ENABLE_PLATFORMS=("mingw32")
 
 OPENSSL_SRC="http://www.openssl.org/source/openssl-1.0.1c.tar.gz"
@@ -32,6 +32,8 @@ BOOST_OUT_BASENAME="boost_1_50_0.tar.bz2"
 #PNGLIB_OUT_BASENAME="libpng-1.5.9.tar.gz"
 QT_SRC="http://releases.qt-project.org/qt4/source/qt-everywhere-opensource-src-4.8.3.tar.gz"
 QT_OUT_BASENAME="qt-everywhere-opensource-src-4.8.3.tar.gz"
+QR_ENCODE_SRC="http://fukuchi.org/works/qrencode/qrencode-3.4.2.tar.gz"
+QR_ENCODE_OUT_BASENAME="qrencode-3.4.2.tar.gz"
 
 WGET_TIMEOUT=20
 WGET_TRIES=2

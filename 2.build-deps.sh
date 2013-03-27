@@ -37,6 +37,30 @@ for CUR_PLATFORM in ${TARGET_PLATFORMS}; do
         mingw32)      
             echo "Building dependencies for mingw32 platform..."
 
+            # qrencode
+            # first check if we really want to rebuilt this (70 days old):
+            need_rebuild=1
+            if [ -f ${platform_src_dir}/qrencode-3.4.2/.libs/libqrencode.a ]; then
+                echo "libqrencode.a already built, checking its oldness..."
+                last_mtime=`stat -c "%Z" ${platform_src_dir}/qrencode-3.4.2/.libs/libqrencode.a`
+                now_time=`date +"%s"`
+                let now_time=now_time-6048000
+                if [ ${last_mtime} -gt ${now_time} ]; then
+                    echo "libqrencode.a generated less than 70 days ago, not rebuilding..."
+                    need_rebuild=0
+                fi
+
+            fi
+            if [ ${need_rebuild} -eq 1 ]; then
+                echo "Building qrencode..."
+                cd ${platform_src_dir}/qrencode-3.4.2/ || exit_error "Failed to change to qrencode-3.4.2/ dir"
+                PATH=$PATH:/usr/i586-mingw32msvc/bin ./configure --host=i586-mingw32msvc --prefix=/usr/i586-mingw32msvc --disable-sdltest --without-tools --without-tests || exit_error "configure failed"
+                PATH=$PATH:/usr/i586-mingw32msvc/bin make || exit_error "make failed"
+                if [ ! -f ${platform_src_dir}/qrencode-3.4.2/.libs/libqrencode.a ]; then
+                    exit_error "UNABLE TO FIND generated libqrencode.a"
+                fi
+            fi
+
             # openssl
             # first check if we really want to rebuilt this (70 days old):
             need_rebuild=1
