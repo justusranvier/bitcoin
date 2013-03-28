@@ -14,6 +14,8 @@ if [ -f bitcoin-qt ]; then
 
 		echo -n "MD5: "   > btci2p-linux64.sum; echo "$MD5linux"  >> btci2p-linux64.sum
 		echo -n "SHA1: " >> btci2p-linux64.sum; echo "$SHA1linux" >> btci2p-linux64.sum
+		
+		gpg --output btci2p-linux64.sig --detach-sig btci2p-linux64.tar.bz2
 	else
 		echo "bitcoind is not found."
 	fi
@@ -30,6 +32,8 @@ if [ -f bitcoin-qt.exe ]; then
 
 		echo -n "MD5: "   > btci2p-win32.sum; echo "$MD5win"  >> btci2p-win32.sum
 		echo -n "SHA1: " >> btci2p-win32.sum; echo "$SHA1win" >> btci2p-win32.sum
+		
+		gpg --output btci2p-win32.sig --detach-sig btci2p-win32.zip
 	else
 		echo "bitcoind.exe is not found."
 	fi
