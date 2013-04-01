@@ -763,7 +763,8 @@ void ThreadSocketHandler2(void* parg)
                         pnode->Release();
                     vNodesDisconnected.push_back(pnode);
 #ifdef USE_NATIVE_I2P
-                    --nI2PNodeCount;
+                    if (pnode->addr.IsNativeI2P())
+                        --nI2PNodeCount;
 #endif
                 }
             }
