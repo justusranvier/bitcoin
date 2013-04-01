@@ -12,7 +12,7 @@ class ShowI2PAddresses : public QDialog
     Q_OBJECT
     
 public:
-    explicit ShowI2PAddresses(QWidget *parent = 0);
+    explicit ShowI2PAddresses(QWidget *parent = 0/*, const QString& caption, const QString& pub, const QString& priv, const QString& b32, const QString& configFileName*/);
     ~ShowI2PAddresses();
     
 private:

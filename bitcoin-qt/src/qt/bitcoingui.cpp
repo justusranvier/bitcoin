@@ -129,13 +129,28 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     QFrame *frameBlocks = new QFrame();
     frameBlocks->setContentsMargins(0,0,0,0);
     frameBlocks->setMinimumWidth(56);
+#ifndef USE_NATIVE_I2P
     frameBlocks->setMaximumWidth(56);
+#endif
     QHBoxLayout *frameBlocksLayout = new QHBoxLayout(frameBlocks);
     frameBlocksLayout->setContentsMargins(3,0,3,0);
     frameBlocksLayout->setSpacing(3);
     labelEncryptionIcon = new QLabel();
     labelConnectionsIcon = new QLabel();
     labelBlocksIcon = new QLabel();
+#ifdef USE_NATIVE_I2P
+    labelI2P = new QLabel();
+    labelI2P->setPixmap(QPixmap(":/images/i2p"));
+    labelI2P->setToolTip(tr("<b>I2P</b> is used"));
+#endif
+
+#ifdef USE_NATIVE_I2P
+//    frameBlocksLayout->addStretch();
+    frameBlocksLayout->addWidget(labelEncryptionIcon);
+    frameBlocksLayout->addWidget(labelI2P);
+    frameBlocksLayout->addWidget(labelConnectionsIcon);
+    frameBlocksLayout->addWidget(labelBlocksIcon);
+#else
     frameBlocksLayout->addStretch();
     frameBlocksLayout->addWidget(labelEncryptionIcon);
     frameBlocksLayout->addStretch();
@@ -143,6 +158,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     frameBlocksLayout->addStretch();
     frameBlocksLayout->addWidget(labelBlocksIcon);
     frameBlocksLayout->addStretch();
+#endif
 
     // Progress bar and label for blocks download
     progressBarLabel = new QLabel();
@@ -373,6 +389,11 @@ void BitcoinGUI::setClientModel(ClientModel *clientModel)
         setNumConnections(clientModel->getNumConnections());
         connect(clientModel, SIGNAL(numConnectionsChanged(int)), this, SLOT(setNumConnections(int)));
 
+#ifdef USE_NATIVE_I2P
+        setNumI2PConnections(clientModel->getNumI2PConnections());
+        connect(clientModel, SIGNAL(numI2PConnectionsChanged(int)), this, SLOT(setNumI2PConnections(int)));
+#endif
+
         setNumBlocks(clientModel->getNumBlocks(), clientModel->getNumBlocksOfPeers());
         connect(clientModel, SIGNAL(numBlocksChanged(int,int)), this, SLOT(setNumBlocks(int,int)));
 
@@ -500,6 +521,23 @@ void BitcoinGUI::setNumConnections(int count)
     labelConnectionsIcon->setPixmap(QIcon(icon).pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
     labelConnectionsIcon->setToolTip(tr("%n active connection(s) to Bitcoin network", "", count));
 }
+
+#ifdef USE_NATIVE_I2P
+void BitcoinGUI::setNumI2PConnections(int count)
+{
+    QString i2pIcon;
+    switch(count)
+    {
+    case 0: i2pIcon = ":/icons/bwi2pconnect_0"; break;
+    case 1: /*case 2: case 3:*/ i2pIcon = ":/icons/bwi2pconnect_1"; break;
+    case 2:/*case 4: case 5: case 6:*/ i2pIcon = ":/icons/bwi2pconnect_2"; break;
+    case 3:/*case 7: case 8: case 9:*/ i2pIcon = ":/icons/bwi2pconnect_3"; break;
+    default: i2pIcon = ":/icons/bwi2pconnect_4"; break;
+    }
+    labelI2P->setPixmap(QPixmap(i2pIcon));
+    labelI2P->setToolTip(tr("%n active connection(s) to I2P-Bitcoin network", "", count));
+}
+#endif
 
 void BitcoinGUI::setNumBlocks(int count, int nTotalBlocks)
 {

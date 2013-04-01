@@ -72,6 +72,7 @@ CAddrMan addrman;
 
 #ifdef USE_NATIVE_I2P
 static std::vector<SOCKET> vhI2PListenSocket;
+int nI2PNodeCount = 0;
 #endif
 
 vector<CNode*> vNodes;
@@ -534,6 +535,10 @@ CNode* ConnectNode(CAddress addrConnect, const char *pszDest, int64 nTimeout)
         {
             LOCK(cs_vNodes);
             vNodes.push_back(pnode);
+#ifdef USE_NATIVE_I2P
+            if (addrConnect.IsNativeI2P())
+                ++nI2PNodeCount;
+#endif
         }
 
         pnode->nTimeConnected = GetTime();
@@ -691,6 +696,7 @@ void AddIncomingConnection(SOCKET hSocket, const CAddress& addr)
         {
             LOCK(cs_vNodes);
             vNodes.push_back(pnode);
+            ++nI2PNodeCount;
         }
     }
 }
@@ -723,6 +729,9 @@ void ThreadSocketHandler2(void* parg)
     printf("ThreadSocketHandler started\n");
     list<CNode*> vNodesDisconnected;
     unsigned int nPrevNodeCount = 0;
+#ifdef USE_NATIVE_I2P
+    int nPrevI2PNodeCount = 0;
+#endif
 
     loop
     {
@@ -753,6 +762,9 @@ void ThreadSocketHandler2(void* parg)
                     if (pnode->fNetworkNode || pnode->fInbound)
                         pnode->Release();
                     vNodesDisconnected.push_back(pnode);
+#ifdef USE_NATIVE_I2P
+                    --nI2PNodeCount;
+#endif
                 }
             }
 
@@ -790,7 +802,13 @@ void ThreadSocketHandler2(void* parg)
             nPrevNodeCount = vNodes.size();
             uiInterface.NotifyNumConnectionsChanged(vNodes.size());
         }
-
+#ifdef USE_NATIVE_I2P
+        if (nPrevI2PNodeCount != nI2PNodeCount)
+        {
+            nPrevI2PNodeCount = nI2PNodeCount;
+            uiInterface.NotifyNumI2PConnectionsChanged(nI2PNodeCount);
+        }
+#endif
 
         //
         // Find which sockets have data to receive

@@ -58,6 +58,10 @@ public:
 
 #ifdef USE_NATIVE_I2P
     QString formatI2PNativeFullVersion() const;
+
+    // I2P TODO
+    QString getCurrentI2PAddress() const;
+    int getNumI2PConnections() const;
 #endif
 
 private:
@@ -74,6 +78,9 @@ private:
     void unsubscribeFromCoreSignals();
 signals:
     void numConnectionsChanged(int count);
+#ifdef USE_NATIVE_I2P
+    void numI2PConnectionsChanged(int count);
+#endif
     void numBlocksChanged(int count, int countOfPeers);
     void alertsChanged(const QString &warnings);
 
@@ -84,6 +91,9 @@ public slots:
     void updateTimer();
     void updateNumConnections(int numConnections);
     void updateAlert(const QString &hash, int status);
+#ifdef USE_NATIVE_I2P
+    void updateNumI2PConnections(int numI2PConnections);
+#endif
 };
 
 #endif // CLIENTMODEL_H

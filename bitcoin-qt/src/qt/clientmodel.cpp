@@ -140,6 +140,16 @@ QString ClientModel::formatI2PNativeFullVersion() const
 {
     return QString::fromStdString(FormatI2PNativeFullVersion());
 }
+
+void ClientModel::updateNumI2PConnections(int numI2PConnections)
+{
+    emit numI2PConnectionsChanged(numI2PConnections);
+}
+
+int ClientModel::getNumI2PConnections() const
+{
+    return nI2PNodeCount;
+}
 #endif
 
 QString ClientModel::formatBuildDate() const
@@ -176,6 +186,14 @@ static void NotifyNumConnectionsChanged(ClientModel *clientmodel, int newNumConn
                               Q_ARG(int, newNumConnections));
 }
 
+#ifdef USE_NATIVE_I2P
+static void NotifyNumI2PConnectionsChanged(ClientModel *clientmodel, int newNumI2PConnections)
+{
+    QMetaObject::invokeMethod(clientmodel, "updateNumI2PConnections", Qt::QueuedConnection,
+                              Q_ARG(int, newNumI2PConnections));
+}
+#endif
+
 static void NotifyAlertChanged(ClientModel *clientmodel, const uint256 &hash, ChangeType status)
 {
     OutputDebugStringF("NotifyAlertChanged %s status=%i\n", hash.GetHex().c_str(), status);
@@ -190,6 +208,9 @@ void ClientModel::subscribeToCoreSignals()
     uiInterface.NotifyBlocksChanged.connect(boost::bind(NotifyBlocksChanged, this));
     uiInterface.NotifyNumConnectionsChanged.connect(boost::bind(NotifyNumConnectionsChanged, this, _1));
     uiInterface.NotifyAlertChanged.connect(boost::bind(NotifyAlertChanged, this, _1, _2));
+#ifdef USE_NATIVE_I2P
+    uiInterface.NotifyNumI2PConnectionsChanged.connect(boost::bind(NotifyNumI2PConnectionsChanged, this, _1));
+#endif
 }
 
 void ClientModel::unsubscribeFromCoreSignals()
@@ -198,4 +219,7 @@ void ClientModel::unsubscribeFromCoreSignals()
     uiInterface.NotifyBlocksChanged.disconnect(boost::bind(NotifyBlocksChanged, this));
     uiInterface.NotifyNumConnectionsChanged.disconnect(boost::bind(NotifyNumConnectionsChanged, this, _1));
     uiInterface.NotifyAlertChanged.disconnect(boost::bind(NotifyAlertChanged, this, _1, _2));
+#ifdef USE_NATIVE_I2P
+    uiInterface.NotifyNumI2PConnectionsChanged.disconnect(boost::bind(NotifyNumI2PConnectionsChanged, this, _1));
+#endif
 }
