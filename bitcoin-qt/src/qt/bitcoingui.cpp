@@ -860,63 +860,6 @@ void BitcoinGUI::showGeneratedI2PAddr(const QString& caption, const QString& pub
 {
     ShowI2PAddresses i2pDialog(caption, pub, priv, b32, configFileName, this);
     i2pDialog.exec();
-//    QDialog dlg(this);
-//    dlg.setWindowTitle(caption);
-//    QLabel* label1 = new QLabel("If you want to use a permanent I2P-address you have to set a \'mydestination\' option in the configuration file: " + configFileName);
-//    label1->setWordWrap(true);
-//    QLabel* label2 = new QLabel("Generated address:");
-//    QLabel* label3 = new QLabel("Address + private key (save this text in the configuration file and keep it secret):");
-//    QTextEdit* privText = new QTextEdit;
-//    privText->setPlainText(priv);
-//    QLabel* label4 = new QLabel("Address (you can make it public):");
-//    QTextEdit* pubText = new QTextEdit;
-//    pubText->setPlainText(pub);
-//    QLabel* label5 = new QLabel("Short base32-address:");
-//    QTextEdit* b32Text = new QTextEdit;
-//    b32Text->setPlainText(b32);
-
-//    privText->setReadOnly(true);
-//    pubText->setReadOnly(true);
-//    b32Text->setReadOnly(true);
-
-//    QPushButton* btnPriv = new QPushButton("Copy address+priv key\nto the clipboard");
-//    QPushButton* btnPub = new QPushButton("Copy address\nto the clipboard");
-//    QPushButton* btnB32 = new QPushButton("Copy b32-address\nto the clipboard");
-
-//    QObject::connect(btnPriv, SIGNAL(clicked()),
-//                     privText, SLOT(selectAll()));
-//    QObject::connect(btnPriv, SIGNAL(clicked()),
-//                     privText, SLOT(copy()));
-
-//    QObject::connect(btnPub, SIGNAL(clicked()),
-//                     pubText, SLOT(selectAll()));
-//    QObject::connect(btnPub, SIGNAL(clicked()),
-//                     pubText, SLOT(copy()));
-
-//    QObject::connect(btnB32, SIGNAL(clicked()),
-//                     b32Text, SLOT(selectAll()));
-//    QObject::connect(btnB32, SIGNAL(clicked()),
-//                     b32Text, SLOT(copy()));
-
-//    QHBoxLayout* vhLayout = new QHBoxLayout;
-//    vhLayout->addWidget(btnPriv);
-//    vhLayout->addWidget(btnPub);
-//    vhLayout->addWidget(btnB32);
-
-//    QVBoxLayout* vbLayout = new QVBoxLayout;
-//    vbLayout->addWidget(label1);
-//    vbLayout->addWidget(label2);
-//    vbLayout->addWidget(label3);
-//    vbLayout->addWidget(privText, 3);
-//    vbLayout->addWidget(label4);
-//    vbLayout->addWidget(pubText, 2);
-//    vbLayout->addWidget(label5);
-//    vbLayout->addWidget(b32Text, 1);
-//    vbLayout->addLayout(vhLayout);
-
-//    dlg.setLayout(vbLayout);
-//    dlg.resize(640, 450);
-//    dlg.exec();
 }
 #endif
 
