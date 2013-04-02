@@ -45,6 +45,9 @@
        <verstretch>3</verstretch>
       </sizepolicy>
      </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>
@@ -120,6 +123,7 @@ to the clipboard</string>
  <tabstops>
   <tabstop>privText</tabstop>
   <tabstop>pubText</tabstop>
+  <tabstop>b32Line</tabstop>
   <tabstop>privButton</tabstop>
   <tabstop>pubButton</tabstop>
   <tabstop>b32Button</tabstop>
