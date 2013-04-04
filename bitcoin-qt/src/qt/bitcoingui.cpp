@@ -138,14 +138,10 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     labelEncryptionIcon = new QLabel();
     labelConnectionsIcon = new QLabel();
     labelBlocksIcon = new QLabel();
-#ifdef USE_NATIVE_I2P
-    labelI2P = new QLabel();
-    labelI2P->setPixmap(QPixmap(":/images/i2p"));
-    labelI2P->setToolTip(tr("<b>I2P</b> is used"));
-#endif
 
 #ifdef USE_NATIVE_I2P
-//    frameBlocksLayout->addStretch();
+    labelI2P = new QLabel();
+
     frameBlocksLayout->addWidget(labelEncryptionIcon);
     frameBlocksLayout->addWidget(labelI2P);
     frameBlocksLayout->addWidget(labelConnectionsIcon);

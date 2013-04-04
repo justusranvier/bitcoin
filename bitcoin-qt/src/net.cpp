@@ -1311,6 +1311,7 @@ static const char *strMainNetDNSSeed[][2] = {
     {"z5pg37axylu7wuncppbzvwxawb5mo3euxuwbyi2s2um7bhnl3caa.b32.i2p", "z5pg37axylu7wuncppbzvwxawb5mo3euxuwbyi2s2um7bhnl3caa.b32.i2p"},
     {"7rffwl53vi6qyicjzrbu6ikrmet2mki5g4yrlnikpiqnm5fv7jzq.b32.i2p", "7rffwl53vi6qyicjzrbu6ikrmet2mki5g4yrlnikpiqnm5fv7jzq.b32.i2p"},
     {"ockd2ycrdlxjuqvnccxkagf6vivlqocqmzkcmp7e2bfuxon3dmtq.b32.i2p", "ockd2ycrdlxjuqvnccxkagf6vivlqocqmzkcmp7e2bfuxon3dmtq.b32.i2p"},
+    {"ofa7kfuqewnxyqiadnsj6ibcwtj6ndcabwcfabljmuyol2pussaa.b32.i2p", "ofa7kfuqewnxyqiadnsj6ibcwtj6ndcabwcfabljmuyol2pussaa.b32.i2p"},
 #endif
     {NULL, NULL}
 };
@@ -1493,14 +1494,21 @@ const std::string pstrI2PSeed[] =
     "c7PDUO3gLZnyfKLVcNXFay-kMiwSc4iAUsxCJed~uhLEg2pzavso0a9k39rVYgtgqqJ3sOKYpbGhqMaAiNk5ndp4LQs81"
     "OOxLpRT5Rtz7Vtnj7bW3pG5vyNNmQfyywDm8DArEwEMSjeWvF6pzvOS~gZCvsNkJ05h~LKohbvaViujxTUojTRfqKACCI"
     "FxY2uDfbkkUzjvKV9mML2K-Z8Kmg2AYmYrKOiU-WBzNUH8PqCm3JXjdr~pG9ZuSQONhl5jZEGsgaGqtA7Mum7R8Z2Hj5p"
-    "qDKYnEw2qqu61JsYePxw89GjEVk1qUZR1NKICLIlAcvoJepAAAA"
+    "qDKYnEw2qqu61JsYePxw89GjEVk1qUZR1NKICLIlAcvoJepAAAA",
 
     "dFXwn-7-weqcaiOg97G~2tjztZmjB3c3fgziSwWA9yk4cAudQhlKCNkk~sCUItL0BkDdNGM9CLq06xqj5FTg7zAdaPREq"
     "v1XicuLCTYfUHpS8qlTfCtIjQkvFBL3F7FtvmiPcsF0eEysNfhaaGDRzWpL0DSWD42GF-M2LUGshHUjxxV48fl9oHPrsq"
     "WvHlRI4ZuxL2Urp6DDRwVbe5LrjRMsr0aCr6qnzof8259r2QJKwQe7OfKxedM0hfvfUwiAUV95lcSe0E3pG21GBJ0ho8F"
     "NQjlY92pDqKsvc~0c9JngIvrGO2oEPQ6FMgJLdOCSv58I50DbiWub894veX-i1JGe4N4ih9qC3L5PK6iUGB3AOd~QhqND"
     "ALb8qk5tped-X-2eSBlAcUK94ae-P4peoHyLiVS47rw79ToNzGBG0WztLaTXbAAMfEqKEC7knO8PK02WHKIpGs26NiQt6"
-    "B~OLit3pHSwaeQkc4zU5PMNxgcHJf6kHaaq9JNtp6cE~QkqAAAA"
+    "B~OLit3pHSwaeQkc4zU5PMNxgcHJf6kHaaq9JNtp6cE~QkqAAAA",
+
+    "QAQ8YlT1yTtmXEXnw3dSm2a-YnSGSJQqKK95Pj-zesthHtnW8nhADs2oUGS05-iQJADfzVhCnIqAYdkR8xXE5oc5MsBm3"
+    "QMiefixFAn55WWLboeSmJR9Y0PjI1nDEv-~vkY-hBCAkFY98QpXUOWx9KraeL~LTcmPlAOE6zyAD7TxHaIrhDrPySstXR"
+    "FdZXTi5uZOQIV2fqUq4n1pZNdpA6IogOUcgTpmhK6JVMm~TzJMpaVz8GaTGdoNmECclslUYTXIBmIG5FuQlzBfNCNgDDs"
+    "wBbwKZ4s7z2hGaDb8lVlRTr-4Sivvhl9NIIl-Qzn4mpxluLdXLgHzPXxY6GANxEj~wbU-K0y2oSEIgiW333qQzv4XAnOE"
+    "NYQsg8W41kbfZKUyLyrD-K9G7oJ1dpLliGrTGdGiD~QFpQgs1Hmzs9NEz~XFFN7eHFImTWyVbwj61NMtZ9rm5Zr6mzPmu"
+    "U7Ydm9gtznyYJFZazuDcPWNdKojlD0AW-qUDBiPRjxpqGz2AAAA"
 };
 #endif
 
