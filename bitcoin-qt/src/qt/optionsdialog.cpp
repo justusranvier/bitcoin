@@ -93,6 +93,11 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
     connect(mapper, SIGNAL(currentIndexChanged(int)), this, SLOT(disableApplyButton()));
     /* setup/change UI elements when proxy IP is invalid/valid */
     connect(this, SIGNAL(proxyIpValid(QValidatedLineEdit *, bool)), this, SLOT(handleProxyIpValid(QValidatedLineEdit *, bool)));
+
+#ifdef USE_NATIVE_I2P
+//    I2POptionsWidget* tabI2P = new I2POptionsWidget();
+//    ui->tabWidget->addTab(tabI2P, QString("I2P"));
+#endif
 }
 
 OptionsDialog::~OptionsDialog()
