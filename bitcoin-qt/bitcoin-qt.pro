@@ -218,8 +218,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/clientversion.h \
     src/txdb.h \
     src/leveldb.h \
-    src/threadsafety.h \
-    src/qt/i2poptionswidget.h
+    src/threadsafety.h
 
 SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/transactiontablemodel.cpp \
@@ -283,8 +282,7 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/rpcconsole.cpp \
     src/noui.cpp \
     src/leveldb.cpp \
-    src/txdb.cpp \
-    src/qt/i2poptionswidget.cpp
+    src/txdb.cpp
 
 RESOURCES += \
     src/qt/bitcoin.qrc
@@ -300,16 +298,22 @@ FORMS += \
     src/qt/forms/sendcoinsentry.ui \
     src/qt/forms/askpassphrasedialog.ui \
     src/qt/forms/rpcconsole.ui \
-    src/qt/forms/optionsdialog.ui \
-    src/qt/forms/i2poptionswidget.ui
+    src/qt/forms/optionsdialog.ui
 
 contains(DEFINES, USE_NATIVE_I2P) {
-HEADERS += src/i2p.h \
-    src/qt/showi2paddresses.h
+HEADERS += \
+    src/i2p.h \
+    src/qt/showi2paddresses.h \
+    src/qt/i2poptionswidget.h
 
-SOURCES +=  src/qt/showi2paddresses.cpp
+SOURCES += \
+    src/qt/showi2paddresses.cpp \
+    src/qt/i2poptionswidget.cpp
 
-FORMS += src/qt/forms/showi2paddresses.ui
+
+FORMS += \
+    src/qt/forms/showi2paddresses.ui \
+    src/qt/forms/i2poptionswidget.ui
 }
 
 contains(USE_QRCODE, 1) {

@@ -6,6 +6,10 @@
 #include "netbase.h"
 #include "optionsmodel.h"
 
+#ifdef USE_NATIVE_I2P
+#include "i2poptionswidget.h"
+#endif
+
 #include <QDir>
 #include <QIntValidator>
 #include <QLocale>
@@ -95,8 +99,8 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
     connect(this, SIGNAL(proxyIpValid(QValidatedLineEdit *, bool)), this, SLOT(handleProxyIpValid(QValidatedLineEdit *, bool)));
 
 #ifdef USE_NATIVE_I2P
-//    I2POptionsWidget* tabI2P = new I2POptionsWidget();
-//    ui->tabWidget->addTab(tabI2P, QString("I2P"));
+    I2POptionsWidget* tabI2P = new I2POptionsWidget();
+    ui->tabWidget->addTab(tabI2P, QString("I2P"));
 #endif
 }
 
