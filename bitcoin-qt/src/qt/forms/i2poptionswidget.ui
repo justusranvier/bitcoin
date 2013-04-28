@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>458</width>
-    <height>350</height>
+    <width>549</width>
+    <height>371</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_15">
      <item>
-      <widget class="QCheckBox" name="checkBox">
+      <widget class="QCheckBox" name="checkBoxUseI2POnly">
        <property name="text">
         <string>Use I2P only (-onlynet=native_i2p)</string>
        </property>
@@ -673,7 +673,7 @@ I2P-address</string>
   </layout>
  </widget>
  <tabstops>
-  <tabstop>checkBox</tabstop>
+  <tabstop>checkBoxUseI2POnly</tabstop>
   <tabstop>lineEditSAMHost</tabstop>
   <tabstop>spinBoxSAMPort</tabstop>
   <tabstop>lineEditTunnelName</tabstop>

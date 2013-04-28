@@ -6,6 +6,7 @@
 #define I2P_H
 
 #include "util.h"
+#include "hash.h"
 #include "i2psam.h"
 
 #define I2P_SESSION_NAME_PARAM          "-i2psessionname"
@@ -20,7 +21,11 @@
 #define I2P_SAM_MY_DESTINATION_PARAM    "-mydestination"
 #define I2P_SAM_MY_DESTINATION_DEFAULT  SAM_GENERATE_MY_DESTINATION
 
+#define I2P_SAM_I2P_OPTIONS_PARAM       "-i2poptions"
+#define I2P_SAM_I2P_OPTIONS_DEFAULT     SAM_DEFAULT_I2P_OPTIONS
+
 #define I2P_SAM_GENERATE_DESTINATION_PARAM "-generatei2pdestination"
+
 
 class I2PSession : private SAM::StreamSession
 {
@@ -30,7 +35,8 @@ private:
               GetArg(I2P_SESSION_NAME_PARAM, I2P_SESSION_NAME_DEFAULT),
               GetArg(I2P_SAM_HOST_PARAM, I2P_SAM_HOST_DEFAULT),
               (uint16_t)GetArg(I2P_SAM_PORT_PARAM, I2P_SAM_PORT_DEFAULT),
-              GetArg(I2P_SAM_MY_DESTINATION_PARAM, I2P_SAM_MY_DESTINATION_DEFAULT))
+              GetArg(I2P_SAM_MY_DESTINATION_PARAM, I2P_SAM_MY_DESTINATION_DEFAULT),
+              GetArg(I2P_SAM_I2P_OPTIONS_PARAM, SAM_DEFAULT_I2P_OPTIONS))
     {}
     ~I2PSession() {}
 
