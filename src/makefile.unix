@@ -59,8 +59,8 @@ LIBS+= \
 
 
 ifdef USE_NATIVE_I2P
-	DEFS += -DUSE_NATIVE_I2P -I../../i2psam/
-	LIBS += -L../../i2psam/
+	DEFS += -DUSE_NATIVE_I2P -I./i2psam/
+	LIBS += -L./i2psam/
 	LIBS += -li2psam
 endif
 
@@ -195,7 +195,7 @@ endif
 	
 ifdef USE_NATIVE_I2P
 i2psam:
-	$(MAKE) -C ../../i2psam -f makefile.unix
+	$(MAKE) -C ./i2psam -f makefile.unix
 endif
 
 TESTOBJS := $(patsubst test/%.cpp,obj-test/%.o,$(wildcard test/*.cpp))
@@ -212,7 +212,7 @@ test_bitcoin: $(TESTOBJS) $(filter-out obj/init.o,$(OBJS:obj/%=obj/%))
 
 clean:
 ifdef USE_NATIVE_I2P
-	$(MAKE) -C ../../i2psam -f makefile.unix clean
+	$(MAKE) -C ./i2psam -f makefile.unix clean
 	-rm -f i2pbuild.h
 endif
 	-rm -f bitcoind test_bitcoin

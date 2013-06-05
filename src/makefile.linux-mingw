@@ -61,8 +61,8 @@ endif
 LIBS += -l mingwthrd -l kernel32 -l user32 -l gdi32 -l comdlg32 -l winspool -l winmm -l shell32 -l comctl32 -l ole32 -l oleaut32 -l uuid -l rpcrt4 -l advapi32 -l ws2_32 -l mswsock -l shlwapi
 
 ifdef USE_NATIVE_I2P
-	DEFS += -DUSE_NATIVE_I2P -I../../i2psam/
-	LIBS += -L../../i2psam/
+	DEFS += -DUSE_NATIVE_I2P -I./i2psam/
+	LIBS += -L./i2psam/
 	LIBS += -li2psam
 endif
 
@@ -138,7 +138,7 @@ endif
 
 ifdef USE_NATIVE_I2P
 i2psam:
-	$(MAKE) -C ../../i2psam -f makefile.linux-mingw
+	$(MAKE) -C ./i2psam -f makefile.linux-mingw
 endif
 
 
@@ -154,7 +154,7 @@ test_bitcoin.exe: $(TESTOBJS) $(filter-out obj/init.o,$(OBJS:obj/%=obj/%))
 
 clean:
 ifdef USE_NATIVE_I2P
-	$(MAKE) -C ../../i2psam -f makefile.linux-mingw clean
+	$(MAKE) -C ./i2psam -f makefile.linux-mingw clean
 	-rm -f i2pbuild.h
 endif
 	-rm -f obj/*.o
