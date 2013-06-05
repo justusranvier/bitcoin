@@ -59,8 +59,8 @@ LIBS+= \
 
 
 ifdef USE_NATIVE_I2P
-	DEFS += -DUSE_NATIVE_I2P -I./i2psam/
-	LIBS += -L./i2psam/
+	DEFS += -DUSE_NATIVE_I2P -I$(CURDIR)/i2psam
+	LIBS += -L$(CURDIR)/i2psam
 	LIBS += -li2psam
 endif
 
@@ -186,18 +186,14 @@ obj/%.o: %.cpp
 	  rm -f $(@:%.o=%.d)
 
 ifdef USE_NATIVE_I2P
-bitcoind: i2psam $(OBJS:obj/%=obj/%)
+bitcoind: $(OBJS:obj/%=obj/%)
+	$(MAKE) -C $(CURDIR)/i2psam -f makefile.unix
 	$(LINK) $(xCXXFLAGS) -o $@ $(OBJS) $(xLDFLAGS) $(LIBS)
 else
 bitcoind: $(OBJS:obj/%=obj/%)
 	$(LINK) $(xCXXFLAGS) -o $@ $^ $(xLDFLAGS) $(LIBS)
 endif
 	
-ifdef USE_NATIVE_I2P
-i2psam:
-	$(MAKE) -C ./i2psam -f makefile.unix
-endif
-
 TESTOBJS := $(patsubst test/%.cpp,obj-test/%.o,$(wildcard test/*.cpp))
 
 obj-test/%.o: test/%.cpp
@@ -212,7 +208,7 @@ test_bitcoin: $(TESTOBJS) $(filter-out obj/init.o,$(OBJS:obj/%=obj/%))
 
 clean:
 ifdef USE_NATIVE_I2P
-	$(MAKE) -C ./i2psam -f makefile.unix clean
+	$(MAKE) -C $(CURDIR)/i2psam -f makefile.unix clean
 	-rm -f i2pbuild.h
 endif
 	-rm -f bitcoind test_bitcoin
