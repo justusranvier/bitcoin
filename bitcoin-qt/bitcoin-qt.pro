@@ -453,15 +453,15 @@ contains(RELEASE, 1) {
 system($$QMAKE_LRELEASE -silent $$TRANSLATIONS)
 
 contains(DEFINES, USE_NATIVE_I2P) {
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../i2psam/release/ -li2psam
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../i2psam/debug/ -li2psam
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/src/i2psam/release/ -li2psam
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/src/i2psam/debug/ -li2psam
 else:symbian: LIBS += -li2psam
-else:unix: LIBS += -L$$OUT_PWD/../i2psam/ -li2psam
+else:unix: LIBS += -L$$OUT_PWD/src/i2psam/ -li2psam
 
-INCLUDEPATH += $$PWD/../i2psam
-DEPENDPATH += $$PWD/../i2psam
+INCLUDEPATH += $$PWD/src/i2psam
+DEPENDPATH += $$PWD/src/i2psam
 
-win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../i2psam/release/libi2psam.a
-else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../i2psam/debug/libi2psam.a
-else:unix:!symbian: PRE_TARGETDEPS += $$OUT_PWD/../i2psam/libi2psam.a
+win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/src/i2psam/release/libi2psam.a
+else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/src/i2psam/debug/libi2psam.a
+else:unix:!symbian: PRE_TARGETDEPS += $$OUT_PWD/src/i2psam/libi2psam.a
 }
