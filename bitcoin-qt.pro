@@ -2,7 +2,7 @@ TEMPLATE = app
 TARGET = bitcoin-qt
 VERSION = 0.8.1
 INCLUDEPATH += src src/json src/qt
-DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE LEVELDB_WITHOUT_MEMENV
+DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE LEVELDB_WITHOUT_MEMENV USE_NATIVE_I2P
 CONFIG += no_include_pwd
 CONFIG += thread
 
@@ -91,6 +91,12 @@ contains(USE_IPV6, -) {
     DEFINES += USE_IPV6=$$USE_IPV6
 }
 
+contains(DEFINES, USE_NATIVE_I2P) {
+    message(Building with native i2p support (experimental))
+} else {
+    message(Building without native i2p support)
+}
+
 contains(BITCOIN_NEED_QT_PLUGINS, 1) {
     DEFINES += BITCOIN_NEED_QT_PLUGINS
     QTPLUGIN += qcncodecs qjpcodecs qtwcodecs qkrcodecs qtaccessiblewidgets
@@ -127,6 +133,14 @@ QMAKE_CLEAN += $$PWD/src/leveldb/libleveldb.a; cd $$PWD/src/leveldb && $(MAKE) c
     PRE_TARGETDEPS += $$OUT_PWD/build/build.h
     QMAKE_EXTRA_TARGETS += genbuild
     DEFINES += HAVE_BUILD_INFO
+}
+
+contains(DEFINES, USE_NATIVE_I2P) {
+    geni2pbuild.depends = FORCE
+    geni2pbuild.commands = cd $$PWD; /bin/sh share/inc_build_number.sh src/i2pbuild.h bitcoin-qt-build-number
+    geni2pbuild.target = src/i2pbuild.h
+    PRE_TARGETDEPS += src/i2pbuild.h
+    QMAKE_EXTRA_TARGETS += geni2pbuild
 }
 
 QMAKE_CXXFLAGS_WARN_ON = -fdiagnostics-show-option -Wall -Wextra -Wformat -Wformat-security -Wno-unused-parameter -Wstack-protector
@@ -290,6 +304,15 @@ FORMS += \
     src/qt/forms/rpcconsole.ui \
     src/qt/forms/optionsdialog.ui
 
+contains(DEFINES, USE_NATIVE_I2P) {
+HEADERS += src/i2p.h \
+    src/qt/showi2paddresses.h
+
+SOURCES +=  src/qt/showi2paddresses.cpp
+
+FORMS += src/qt/forms/showi2paddresses.ui
+}
+
 contains(USE_QRCODE, 1) {
 HEADERS += src/qt/qrcodedialog.h
 SOURCES += src/qt/qrcodedialog.cpp
@@ -407,3 +430,17 @@ contains(RELEASE, 1) {
 }
 
 system($$QMAKE_LRELEASE -silent $$_PRO_FILE_)
+
+contains(DEFINES, USE_NATIVE_I2P) {
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/src/i2psam/release/ -li2psam
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/src/i2psam/debug/ -li2psam
+else:symbian: LIBS += -li2psam
+else:unix: LIBS += -L$$OUT_PWD/src/i2psam/ -li2psam
+
+INCLUDEPATH += $$PWD/src/i2psam
+DEPENDPATH += $$PWD/src/i2psam
+
+win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/src/i2psam/release/libi2psam.a
+else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/src/i2psam/debug/libi2psam.a
+else:unix:!symbian: PRE_TARGETDEPS += $$OUT_PWD/src/i2psam/libi2psam.a
+}

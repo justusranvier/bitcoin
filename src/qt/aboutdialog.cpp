@@ -1,3 +1,6 @@
+//
+// I2P-patch
+// Copyright (c) 2012-2013 giv
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
 
@@ -22,6 +25,10 @@ void AboutDialog::setModel(ClientModel *model)
     if(model)
     {
         ui->versionLabel->setText(model->formatFullVersion());
+
+#ifdef USE_NATIVE_I2P
+        ui->i2pNativeVersionLabel->setText(model->formatI2PNativeFullVersion());
+#endif
     }
 }
 

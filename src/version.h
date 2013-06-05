@@ -1,6 +1,9 @@
 // Copyright (c) 2012 The Bitcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
+//
+// I2P-patch
+// Copyright (c) 2012-2013 giv
 #ifndef BITCOIN_VERSION_H
 #define BITCOIN_VERSION_H
 
@@ -20,6 +23,11 @@ static const int CLIENT_VERSION =
 extern const std::string CLIENT_NAME;
 extern const std::string CLIENT_BUILD;
 extern const std::string CLIENT_DATE;
+
+#ifdef USE_NATIVE_I2P
+extern const std::string I2P_NATIVE_BUILD;
+extern const std::string I2P_NATIVE_DATE;
+#endif
 
 //
 // network protocol versioning

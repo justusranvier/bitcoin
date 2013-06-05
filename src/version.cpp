@@ -1,6 +1,9 @@
 // Copyright (c) 2012 The Bitcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
+//
+// I2P-patch
+// Copyright (c) 2012-2013 giv
 #include <string>
 
 #include "version.h"
@@ -59,6 +62,22 @@ const std::string CLIENT_NAME("Satoshi");
 #    else
 #        define BUILD_DATE __DATE__ ", " __TIME__
 #    endif
+#endif
+
+#ifdef USE_NATIVE_I2P
+
+#include "i2pbuild.h"
+
+#define BUILD_I2P_NATIVE_DESC_FROM_COMMIT(maj,min,rev,build,commit) \
+    "v" DO_STRINGIZE(maj) "." DO_STRINGIZE(min) "." DO_STRINGIZE(rev) "." DO_STRINGIZE(build) "-r" commit
+
+#define BUILD_I2P_NATIVE_DESC BUILD_I2P_NATIVE_DESC_FROM_COMMIT(I2P_NATIVE_VERSION_MAJOR, I2P_NATIVE_VERSION_MINOR, I2P_NATIVE_VERSION_REVISION, I2P_NATIVE_VERSION_BUILD, I2P_NATIVE_REVISION_STR)
+
+#define BUILD_I2P_NATIVE_DATE __DATE__ /*", " __TIME__*/
+
+const std::string I2P_NATIVE_BUILD(BUILD_I2P_NATIVE_DESC);
+const std::string I2P_NATIVE_DATE(BUILD_I2P_NATIVE_DATE);
+
 #endif
 
 const std::string CLIENT_BUILD(BUILD_DESC CLIENT_VERSION_SUFFIX);

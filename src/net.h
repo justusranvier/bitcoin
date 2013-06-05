@@ -2,6 +2,9 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
+//
+// I2P-patch
+// Copyright (c) 2012-2013 giv
 #ifndef BITCOIN_NET_H
 #define BITCOIN_NET_H
 
@@ -42,6 +45,13 @@ unsigned short GetListenPort();
 bool BindListenPort(const CService &bindAddr, std::string& strError=REF(std::string()));
 void StartNode(void* parg);
 bool StopNode();
+
+#ifdef USE_NATIVE_I2P
+bool BindListenNativeI2P();
+bool BindListenNativeI2P(SOCKET& hSocket);
+
+extern int nI2PNodeCount;
+#endif
 
 enum
 {
@@ -192,7 +202,13 @@ public:
     CCriticalSection cs_inventory;
     std::multimap<int64, CInv> mapAskFor;
 
+#ifdef USE_NATIVE_I2P
+    CNode(SOCKET hSocketIn, CAddress addrIn, std::string addrNameIn = "", bool fInboundIn=false)
+        : vSend(SER_NETWORK | (((addrIn.nServices & NODE_I2P) || addrIn.IsNativeI2P()) ? 0 : SER_IPADDRONLY), MIN_PROTO_VERSION),
+          vRecv(SER_NETWORK | (((addrIn.nServices & NODE_I2P) || addrIn.IsNativeI2P()) ? 0 : SER_IPADDRONLY), MIN_PROTO_VERSION)
+#else
     CNode(SOCKET hSocketIn, CAddress addrIn, std::string addrNameIn = "", bool fInboundIn=false) : vSend(SER_NETWORK, MIN_PROTO_VERSION), vRecv(SER_NETWORK, MIN_PROTO_VERSION)
+#endif
     {
         nServices = 0;
         hSocket = hSocketIn;
@@ -278,6 +294,10 @@ public:
         // SendMessages will filter it again for knowns that were added
         // after addresses were pushed.
         if (addr.IsValid() && !setAddrKnown.count(addr))
+#ifdef USE_NATIVE_I2P
+            // if receiver doesn't support i2p-address we don't send it
+            if ((this->nServices & NODE_I2P) || !addr.IsNativeI2P())
+#endif
             vAddrToSend.push_back(addr);
     }
 

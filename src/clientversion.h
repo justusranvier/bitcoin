@@ -1,3 +1,6 @@
+//
+// I2P-patch
+// Copyright (c) 2012-2013 giv
 #ifndef CLIENTVERSION_H
 #define CLIENTVERSION_H
 
@@ -13,6 +16,13 @@
 
 // Set to true for release, false for prerelease or test build
 #define CLIENT_VERSION_IS_RELEASE  true
+
+#ifdef USE_NATIVE_I2P
+
+#define I2P_NATIVE_VERSION_MAJOR       0
+#define I2P_NATIVE_VERSION_MINOR       1
+
+#endif
 
 // Converts the parameter X to a string after macro replacement on X has been performed.
 // Don't merge these into one macro!

@@ -2,6 +2,9 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
+//
+// I2P-patch
+// Copyright (c) 2012-2013 giv
 #ifndef BITCOIN_SERIALIZE_H
 #define BITCOIN_SERIALIZE_H
 
@@ -50,6 +53,10 @@ enum
     SER_NETWORK         = (1 << 0),
     SER_DISK            = (1 << 1),
     SER_GETHASH         = (1 << 2),
+
+#ifdef USE_NATIVE_I2P
+    SER_IPADDRONLY      = (1 << 18),
+#endif
 };
 
 #define IMPLEMENT_SERIALIZE(statements)    \

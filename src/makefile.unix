@@ -1,6 +1,9 @@
 # Copyright (c) 2009-2010 Satoshi Nakamoto
 # Distributed under the MIT/X11 software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
+#
+# I2P-patch
+# Copyright (c) 2013 giv
 
 USE_UPNP:=0
 USE_IPV6:=1
@@ -58,6 +61,12 @@ LIBS+= \
    -l dl \
    -l pthread
 
+
+ifdef USE_NATIVE_I2P
+	DEFS += -DUSE_NATIVE_I2P -I$(CURDIR)/i2psam
+	LIBS += -L$(CURDIR)/i2psam
+	LIBS += -li2psam
+endif
 
 # Hardening
 # Make some classes of vulnerabilities unexploitable in case one is discovered.
@@ -177,7 +186,17 @@ endif
 
 obj/build.h: FORCE
 	/bin/sh ../share/genbuild.sh obj/build.h
+
+ifdef USE_NATIVE_I2P
+i2pbuild.h: FORCE
+	/bin/sh ../share/inc_build_number.sh i2pbuild.h ../bitcoind-build-number
+endif
+
+ifdef USE_NATIVE_I2P
+version.cpp: obj/build.h i2pbuild.h
+else
 version.cpp: obj/build.h
+endif
 DEFS += -DHAVE_BUILD_INFO
 
 P_TO_D = \
@@ -190,8 +209,14 @@ obj/%.o: %.cpp
 	$(CXX) -c $(xCXXFLAGS) -DLEVELDB_WITHOUT_MEMENV -MMD -MF $(@:%.o=%.d) -o $@ $<
 	$(P_TO_D)
 
+ifdef USE_NATIVE_I2P
+bitcoind: $(OBJS)
+	$(MAKE) -C $(CURDIR)/i2psam -f makefile.unix
+	$(LINK) $(xCXXFLAGS) -o $@ $(OBJS) $(xLDFLAGS) $(LIBS)
+else
 bitcoind: $(OBJS)
 	$(LINK) $(xCXXFLAGS) -o $@ $^ $(xLDFLAGS) $(LIBS)
+endif
 
 obj-test/%.o: test/%.cpp
 	$(CXX) -c $(TESTDEFS) $(xCXXFLAGS) -MMD -MF $(@:%.o=%.d) -o $@ $<
@@ -205,6 +230,10 @@ test_bitcoin: $(TESTOBJS)
 	$(LINK) $(xCXXFLAGS) -o $@ $(LIBPATHS) $^ $(TESTLIBS) $(xLDFLAGS) $(LIBS)
 
 clean:
+ifdef USE_NATIVE_I2P
+	$(MAKE) -C $(CURDIR)/i2psam -f makefile.unix clean
+	-rm -f i2pbuild.h
+endif
 	-rm -f bitcoind test_bitcoin
 	-rm -f obj/*.o
 	-rm -f obj-test/*.o

@@ -2,6 +2,9 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
+//
+// I2P-patch
+// Copyright (c) 2012-2013 giv
 
 #include "irc.h"
 #include "db.h"
@@ -10,6 +13,10 @@
 #include "addrman.h"
 #include "ui_interface.h"
 #include "script.h"
+
+#ifdef USE_NATIVE_I2P
+#include "i2p.h"
+#endif
 
 #ifdef WIN32
 #include <string.h>
@@ -48,7 +55,11 @@ struct LocalServiceInfo {
 //
 bool fDiscover = true;
 bool fUseUPnP = false;
+#ifdef USE_NATIVE_I2P
+uint64 nLocalServices = NODE_I2P | NODE_NETWORK;
+#else
 uint64 nLocalServices = NODE_NETWORK;
+#endif
 static CCriticalSection cs_mapLocalHost;
 static map<CNetAddr, LocalServiceInfo> mapLocalHost;
 static bool vfReachable[NET_MAX] = {};
@@ -58,6 +69,11 @@ uint64 nLocalHostNonce = 0;
 array<int, THREAD_MAX> vnThreadsRunning;
 static std::vector<SOCKET> vhListenSocket;
 CAddrMan addrman;
+
+#ifdef USE_NATIVE_I2P
+static std::vector<SOCKET> vhI2PListenSocket;
+int nI2PNodeCount = 0;
+#endif
 
 vector<CNode*> vNodes;
 CCriticalSection cs_vNodes;
@@ -519,6 +535,10 @@ CNode* ConnectNode(CAddress addrConnect, const char *pszDest, int64 nTimeout)
         {
             LOCK(cs_vNodes);
             vNodes.push_back(pnode);
+#ifdef USE_NATIVE_I2P
+            if (addrConnect.IsNativeI2P())
+                ++nI2PNodeCount;
+#endif
         }
 
         pnode->nTimeConnected = GetTime();
@@ -637,7 +657,51 @@ void CNode::copyStats(CNodeStats &stats)
 
 
 
+#ifdef USE_NATIVE_I2P
+void AddIncomingConnection(SOCKET hSocket, const CAddress& addr)
+{
+    int nInbound = 0;
 
+    {
+        LOCK(cs_vNodes);
+        BOOST_FOREACH(CNode* pnode, vNodes)
+            if (pnode->fInbound)
+                nInbound++;
+    }
+
+    if (hSocket == INVALID_SOCKET)
+    {
+        int nErr = WSAGetLastError();
+        if (nErr != WSAEWOULDBLOCK)
+            printf("socket error accept failed: %d\n", nErr);
+    }
+    else if (nInbound >= GetArg("-maxconnections", 125) - MAX_OUTBOUND_CONNECTIONS)
+    {
+        {
+            LOCK(cs_setservAddNodeAddresses);
+            if (!setservAddNodeAddresses.count(addr))
+                closesocket(hSocket);
+        }
+    }
+    else if (CNode::IsBanned(addr))
+    {
+        printf("connection from %s dropped (banned)\n", addr.ToString().c_str());
+        closesocket(hSocket);
+    }
+    else
+    {
+        printf("accepted connection %s\n", addr.ToString().c_str());
+        CNode* pnode = new CNode(hSocket, addr, "", true);
+        pnode->AddRef();
+        {
+            LOCK(cs_vNodes);
+            vNodes.push_back(pnode);
+            ++nI2PNodeCount;
+        }
+    }
+}
+
+#endif
 
 void ThreadSocketHandler(void* parg)
 {
@@ -665,6 +729,9 @@ void ThreadSocketHandler2(void* parg)
     printf("ThreadSocketHandler started\n");
     list<CNode*> vNodesDisconnected;
     unsigned int nPrevNodeCount = 0;
+#ifdef USE_NATIVE_I2P
+    int nPrevI2PNodeCount = 0;
+#endif
 
     loop
     {
@@ -695,6 +762,10 @@ void ThreadSocketHandler2(void* parg)
                     if (pnode->fNetworkNode || pnode->fInbound)
                         pnode->Release();
                     vNodesDisconnected.push_back(pnode);
+#ifdef USE_NATIVE_I2P
+                    if (pnode->addr.IsNativeI2P())
+                        --nI2PNodeCount;
+#endif
                 }
             }
 
@@ -732,7 +803,13 @@ void ThreadSocketHandler2(void* parg)
             nPrevNodeCount = vNodes.size();
             uiInterface.NotifyNumConnectionsChanged(vNodes.size());
         }
-
+#ifdef USE_NATIVE_I2P
+        if (nPrevI2PNodeCount != nI2PNodeCount)
+        {
+            nPrevI2PNodeCount = nI2PNodeCount;
+            uiInterface.NotifyNumI2PConnectionsChanged(nI2PNodeCount);
+        }
+#endif
 
         //
         // Find which sockets have data to receive
@@ -749,6 +826,17 @@ void ThreadSocketHandler2(void* parg)
         FD_ZERO(&fdsetError);
         SOCKET hSocketMax = 0;
         bool have_fds = false;
+
+#ifdef USE_NATIVE_I2P
+        BOOST_FOREACH(SOCKET hI2PListenSocket, vhI2PListenSocket) {
+            if (hI2PListenSocket != INVALID_SOCKET)
+            {
+                FD_SET(hI2PListenSocket, &fdsetRecv);
+                hSocketMax = max(hSocketMax, hI2PListenSocket);
+                have_fds = true;
+            }
+        }
+#endif
 
         BOOST_FOREACH(SOCKET hListenSocket, vhListenSocket) {
             FD_SET(hListenSocket, &fdsetRecv);
@@ -852,6 +940,73 @@ void ThreadSocketHandler2(void* parg)
             }
         }
 
+#ifdef USE_NATIVE_I2P
+        //
+        // Accept new I2P connections
+        //
+
+        bool haveInvalids = false;
+        for (std::vector<SOCKET>::iterator it = vhI2PListenSocket.begin(); it != vhI2PListenSocket.end(); ++it)
+        {
+            SOCKET& hI2PListenSocket = *it;
+            if (hI2PListenSocket == INVALID_SOCKET)
+            {
+                if (haveInvalids)
+                    it = vhI2PListenSocket.erase(it) - 1;
+                else
+                    BindListenNativeI2P(hI2PListenSocket);
+                haveInvalids = true;
+            }
+            else if (FD_ISSET(hI2PListenSocket, &fdsetRecv))
+            {
+                const size_t bufSize = NATIVE_I2P_DESTINATION_SIZE + 1;
+                char pchBuf[bufSize];
+                memset(pchBuf, 0, bufSize);
+                int nBytes = recv(hI2PListenSocket, pchBuf, sizeof(pchBuf), MSG_DONTWAIT);
+                if (nBytes > 0)
+                {
+                    if (nBytes == NATIVE_I2P_DESTINATION_SIZE + 1) // we're waiting for dest-hash + '\n' symbol
+                    {
+                        std::string incomingAddr(pchBuf, pchBuf + NATIVE_I2P_DESTINATION_SIZE);
+                        CAddress addr;
+                        if (addr.SetSpecial(incomingAddr) && addr.IsNativeI2P())
+                        {
+                            AddIncomingConnection(hI2PListenSocket, addr);
+                        }
+                        else
+                        {
+                            printf("Invalid incoming destination hash received (%s)\n", incomingAddr.c_str());
+                            closesocket(hI2PListenSocket);
+                        }
+                    }
+                    else
+                    {
+                        printf("Invalid incoming destination hash size received (%d)\n", nBytes);
+                        closesocket(hI2PListenSocket);
+                    }
+                }
+                else if (nBytes == 0)
+                {
+                    // socket closed gracefully
+                    printf("I2P listen socket closed\n");
+                    closesocket(hI2PListenSocket);
+                }
+                else if (nBytes < 0)
+                {
+                    // error
+                    const int nErr = WSAGetLastError();
+                    if (nErr == WSAEWOULDBLOCK || nErr == WSAEMSGSIZE || nErr == WSAEINTR || nErr == WSAEINPROGRESS)
+                        continue;
+
+                    printf("I2P listen socket recv error %d\n", nErr);
+                    closesocket(hI2PListenSocket);
+                }
+                hI2PListenSocket = INVALID_SOCKET;  // we've saved this socket in a CNode or closed it, so we can safety reset it anyway
+                BindListenNativeI2P(hI2PListenSocket);
+            }
+        }
+
+#endif
 
         //
         // Service each socket
@@ -1150,6 +1305,14 @@ static const char *strMainNetDNSSeed[][2] = {
     {"bluematt.me", "dnsseed.bluematt.me"},
     {"dashjr.org", "dnsseed.bitcoin.dashjr.org"},
     {"xf2.org", "bitseed.xf2.org"},
+#ifdef USE_NATIVE_I2P
+    {"bhqfvosghsfdbi3qubnk3ro6juklz5w7b6l3x6mibkxzzk3mob5a.b32.i2p", "bhqfvosghsfdbi3qubnk3ro6juklz5w7b6l3x6mibkxzzk3mob5a.b32.i2p"},
+    {"lskv7enstesq6q63qtfkftczh3kyrvsjphpllclx3zqpd6menr3q.b32.i2p", "lskv7enstesq6q63qtfkftczh3kyrvsjphpllclx3zqpd6menr3q.b32.i2p"},
+    {"z5pg37axylu7wuncppbzvwxawb5mo3euxuwbyi2s2um7bhnl3caa.b32.i2p", "z5pg37axylu7wuncppbzvwxawb5mo3euxuwbyi2s2um7bhnl3caa.b32.i2p"},
+    {"7rffwl53vi6qyicjzrbu6ikrmet2mki5g4yrlnikpiqnm5fv7jzq.b32.i2p", "7rffwl53vi6qyicjzrbu6ikrmet2mki5g4yrlnikpiqnm5fv7jzq.b32.i2p"},
+    {"ockd2ycrdlxjuqvnccxkagf6vivlqocqmzkcmp7e2bfuxon3dmtq.b32.i2p", "ockd2ycrdlxjuqvnccxkagf6vivlqocqmzkcmp7e2bfuxon3dmtq.b32.i2p"},
+    {"ofa7kfuqewnxyqiadnsj6ibcwtj6ndcabwcfabljmuyol2pussaa.b32.i2p", "ofa7kfuqewnxyqiadnsj6ibcwtj6ndcabwcfabljmuyol2pussaa.b32.i2p"},
+#endif
     {NULL, NULL}
 };
 
@@ -1302,6 +1465,53 @@ unsigned int pnSeed[] =
     0x054b6f56, 0x854c496c, 0xd92a454a, 0xc39bd054, 0x6093614b, 0x9dbad754, 0x5bf0604a, 0x99f22305
 };
 
+#ifdef USE_NATIVE_I2P
+const std::string pstrI2PSeed[] =
+{
+    "SVAxpjZzKn~HjvuqpoX5Y948CQnrPpw~9Y9n7itkniijx3NbgTQGJVmZJoc1ERXE87CqcLeeaWtAwqIwhYXL5Y5XkvaUA"
+    "lAA5BD-9afCmyP42rtEluQLBAprd70UuN20ujuVm0HPyKcIyezphMHsK~GbYMNFiyTz8ko~Kd2wHaeXKWQh6pXyjQJzT4"
+    "Bwcv1Y9JtPC5b1P5VpwQaLlMJJvblRi8jbRAbimjsxxrMSG6YX8Ks99tsdnQ6YOHGzTPoGpHFgBiROSYwXtC~BbFSv0Xf"
+    "hmN17ZfG6ZCXTbp-xVs-4txSyS~hnS9dL9xHWIv9MNbJzZhI7YztxWgMR3ZNMwR-W2fUeHAcZusmvbm3r-NpIC0O0p9LD"
+    "Dcu7Vxszk~QD~qylFfIT3j8kwu4RDExgqyelVdXVVSlyriHWoIdt9BklqwI1dbAEoLAfG7IZ3921dP4-MH7~AS8Jn3foN"
+    "e8CAUvu2baRNRIAu75GknCFV5gGIuRRJjFNnrt~vaZfIQP6AAAA",
+
+    "6KDnZnTsXqP4Av1re1kIRICjdXX3gnpKl97L6ewnJ~0GNVSRm1mz4dYLo6oc4yU54PaxvenQOZ04pT8xrcl99GCznuBE9"
+    "vTKjnmF2A5zh9NAkOTKPdoRq9sd4R6Gyh26ffCcgXzMIanHq8OKIneBB9WmIImshvp~VKdnQkB9r6LLDfHBoUBB~1V3sP"
+    "C8lWxvBpdXHiDofq6tS~hlULjzno9NjYXg6fuk8QMrPxvzi45jaThDDvuK7G4F3JLkvAgrdjoYtVwvOk52yUQKElSB5FN"
+    "p~RvI0Gr7kaeappWSqSkCe5AgLPqI194V7Nt~GwP1MzZLDFoVXB5fhQZ-Wza55Xzh2~l5TgBndaPvo~kT7cV8Gl8RxpUz"
+    "8J-V3q3L2~7xLyTNFGvZahGIh2Sl6npEl876iXFJYfZXVGi8G5BCxhUVM03ycNdpzaGyqOT0e1uMMzrXYrS6zGQ~AY05~"
+    "8Bza6ulEJ1XNqQCkq-5mtcN9Exe-M16XWhpv-zECnr46xKSAAAA",
+
+    "K4bxj-QLzTqA5kBiuawTBGOm5Z9VIGIFfC2mwwQrgmVtf94f9FgFeiglXQ6GF3Zls4aoH3pHEdeWe7hr2Y9q6zUj9tIxP"
+    "Ld2u70nVUCKx6pphO5B7vanlBRoivozwYPvdhfX~skKOE1YSIqvWX1RM3fUN1HXh1plL75-UlB-~VIB4usqBfxv5Qs5W8"
+    "QK7AX0KOoFZ~2qg70VUrxbbc-sSyK6-ZDCsDKvUqYbIfG0XeR6U8eiCYLCV9VRkUK1RLSFXYw-KP-GnMNmoVbREIzpvJy"
+    "dgGK0acKhBY9WEoEcrFflXJedD95opNWYYX~ZGO-psM7dY-BMUcRY5bVlAPpj7DuXcqK82d9D3iLrDDlyt3P-I1GprAp0"
+    "O14vYJqG3RoDcdMxOSpiuVKnq3GzqrxhcIFA2SK9KYVSNoEOsz1dM49bmw0DEzx2IGMHlPQ1ctmQIbkBS9i6wr3el~1Lr"
+    "PrcwRoVsdekVD4ZRD42YA61OqblXM3iqMVFe8U1CIa94oiaAAAA",
+
+    "Oonb8SSUV6Y1jYVl6dV~4I2oEpMqAWPnc5IyhcKT-oqEkeEfelJKFn6KXfwOSoavWNj0GOvr~EPnklwzf13HwvKixWe2E"
+    "Lz7BkMJZJyFmJ37BTDDUg51828Xu1DvOVpE4-OTetCm6QD-3dJAIDrbwCE5q9IyknQqD9qSHBc3QqBKSZMbCBw0kKcN~e"
+    "c7PDUO3gLZnyfKLVcNXFay-kMiwSc4iAUsxCJed~uhLEg2pzavso0a9k39rVYgtgqqJ3sOKYpbGhqMaAiNk5ndp4LQs81"
+    "OOxLpRT5Rtz7Vtnj7bW3pG5vyNNmQfyywDm8DArEwEMSjeWvF6pzvOS~gZCvsNkJ05h~LKohbvaViujxTUojTRfqKACCI"
+    "FxY2uDfbkkUzjvKV9mML2K-Z8Kmg2AYmYrKOiU-WBzNUH8PqCm3JXjdr~pG9ZuSQONhl5jZEGsgaGqtA7Mum7R8Z2Hj5p"
+    "qDKYnEw2qqu61JsYePxw89GjEVk1qUZR1NKICLIlAcvoJepAAAA",
+
+    "dFXwn-7-weqcaiOg97G~2tjztZmjB3c3fgziSwWA9yk4cAudQhlKCNkk~sCUItL0BkDdNGM9CLq06xqj5FTg7zAdaPREq"
+    "v1XicuLCTYfUHpS8qlTfCtIjQkvFBL3F7FtvmiPcsF0eEysNfhaaGDRzWpL0DSWD42GF-M2LUGshHUjxxV48fl9oHPrsq"
+    "WvHlRI4ZuxL2Urp6DDRwVbe5LrjRMsr0aCr6qnzof8259r2QJKwQe7OfKxedM0hfvfUwiAUV95lcSe0E3pG21GBJ0ho8F"
+    "NQjlY92pDqKsvc~0c9JngIvrGO2oEPQ6FMgJLdOCSv58I50DbiWub894veX-i1JGe4N4ih9qC3L5PK6iUGB3AOd~QhqND"
+    "ALb8qk5tped-X-2eSBlAcUK94ae-P4peoHyLiVS47rw79ToNzGBG0WztLaTXbAAMfEqKEC7knO8PK02WHKIpGs26NiQt6"
+    "B~OLit3pHSwaeQkc4zU5PMNxgcHJf6kHaaq9JNtp6cE~QkqAAAA",
+
+    "QAQ8YlT1yTtmXEXnw3dSm2a-YnSGSJQqKK95Pj-zesthHtnW8nhADs2oUGS05-iQJADfzVhCnIqAYdkR8xXE5oc5MsBm3"
+    "QMiefixFAn55WWLboeSmJR9Y0PjI1nDEv-~vkY-hBCAkFY98QpXUOWx9KraeL~LTcmPlAOE6zyAD7TxHaIrhDrPySstXR"
+    "FdZXTi5uZOQIV2fqUq4n1pZNdpA6IogOUcgTpmhK6JVMm~TzJMpaVz8GaTGdoNmECclslUYTXIBmIG5FuQlzBfNCNgDDs"
+    "wBbwKZ4s7z2hGaDb8lVlRTr-4Sivvhl9NIIl-Qzn4mpxluLdXLgHzPXxY6GANxEj~wbU-K0y2oSEIgiW333qQzv4XAnOE"
+    "NYQsg8W41kbfZKUyLyrD-K9G7oJ1dpLliGrTGdGiD~QFpQgs1Hmzs9NEz~XFFN7eHFImTWyVbwj61NMtZ9rm5Zr6mzPmu"
+    "U7Ydm9gtznyYJFZazuDcPWNdKojlD0AW-qUDBiPRjxpqGz2AAAA"
+};
+#endif
+
 void DumpAddresses()
 {
     int64 nStart = GetTimeMillis();
@@ -1443,6 +1653,17 @@ void ThreadOpenConnections2(void* parg)
                 addr.nTime = GetTime()-GetRand(nOneWeek)-nOneWeek;
                 vAdd.push_back(addr);
             }
+
+#ifdef USE_NATIVE_I2P
+            for (size_t i = 0; i < ARRAYLEN(pstrI2PSeed); i++)
+            {
+                const int64 nOneWeek = 7*24*60*60;
+                CAddress addr(CService((const std::string&)pstrI2PSeed[i]));
+                addr.nTime = GetTime()-GetRand(nOneWeek)-nOneWeek;
+                vAdd.push_back(addr);
+            }
+#endif
+
             addrman.Add(vAdd, CNetAddr("127.0.0.1"));
         }
 
@@ -1492,7 +1713,11 @@ void ThreadOpenConnections2(void* parg)
                 continue;
 
             // do not allow non-default ports, unless after 50 invalid addresses selected already
+#ifdef USE_NATIVE_I2P
+            if (!addr.IsNativeI2P() && addr.GetPort() != GetDefaultPort() && nTries < 50)
+#else
             if (addr.GetPort() != GetDefaultPort() && nTries < 50)
+#endif
                 continue;
 
             addrConnect = addr;
@@ -1733,7 +1958,27 @@ void ThreadMessageHandler2(void* parg)
 
 
 
+#ifdef USE_NATIVE_I2P
+bool BindListenNativeI2P()
+{
+    SOCKET hNewI2PListenSocket = INVALID_SOCKET;
+    if (!BindListenNativeI2P(hNewI2PListenSocket))
+        return false;
+    vhI2PListenSocket.push_back(hNewI2PListenSocket);
+    return true;
+}
 
+bool BindListenNativeI2P(SOCKET& hSocket)
+{
+    hSocket = I2PSession::Instance().accept(false);
+    if (!SetSocketOptions(hSocket) || hSocket == INVALID_SOCKET)
+        return false;
+    CService addrBind(I2PSession::Instance().getMyAddress(), 0);
+    if (addrBind.IsRoutable() && fDiscover)
+        AddLocal(addrBind, LOCAL_BIND);
+    return true;
+}
+#endif
 
 bool BindListenPort(const CService &addrBind, string& strError)
 {
@@ -2011,6 +2256,13 @@ public:
             if (hListenSocket != INVALID_SOCKET)
                 if (closesocket(hListenSocket) == SOCKET_ERROR)
                     printf("closesocket(hListenSocket) failed with error %d\n", WSAGetLastError());
+
+#ifdef USE_NATIVE_I2P
+        BOOST_FOREACH(SOCKET& hI2PListenSocket, vhI2PListenSocket)
+            if (hI2PListenSocket != INVALID_SOCKET)
+                if (closesocket(hI2PListenSocket) == SOCKET_ERROR)
+                    printf("closesocket(hI2PListenSocket) failed with error %d\n", WSAGetLastError());
+#endif
 
 #ifdef WIN32
         // Shutdown Windows Sockets

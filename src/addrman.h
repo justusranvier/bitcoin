@@ -1,6 +1,9 @@
 // Copyright (c) 2012 Pieter Wuille
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
+//
+// I2P-patch
+// Copyright (c) 2012-2013 giv
 #ifndef _BITCOIN_ADDRMAN
 #define _BITCOIN_ADDRMAN 1
 
@@ -156,7 +159,11 @@ public:
 #define ADDRMAN_MIN_FAIL_DAYS 7
 
 // the maximum percentage of nodes to return in a getaddr call
+#ifdef USE_NATIVE_I2P
+#define ADDRMAN_GETADDR_MAX_PCT 100
+#else
 #define ADDRMAN_GETADDR_MAX_PCT 23
+#endif
 
 // the maximum number of nodes to return in a getaddr call
 #define ADDRMAN_GETADDR_MAX 2500

@@ -1,6 +1,9 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
+//
+// I2P-patch
+// Copyright (c) 2012-2013 giv
 #ifndef BITCOIN_NETBASE_H
 #define BITCOIN_NETBASE_H
 
@@ -17,12 +20,21 @@ extern int nConnectTimeout;
 #undef SetPort
 #endif
 
+#ifdef USE_NATIVE_I2P
+#define NATIVE_I2P_DESTINATION_SIZE     516
+#define NATIVE_I2P_B32ADDR_SIZE         60
+#define NATIVE_I2P_NET_STRING           "native_i2p"
+#endif
+
 enum Network
 {
     NET_UNROUTABLE,
     NET_IPV4,
     NET_IPV6,
     NET_TOR,
+#ifdef USE_NATIVE_I2P
+    NET_NATIVE_I2P,
+#endif
 
     NET_MAX,
 };
@@ -35,6 +47,10 @@ class CNetAddr
 {
     protected:
         unsigned char ip[16]; // in network byte order
+
+#ifdef USE_NATIVE_I2P
+        unsigned char i2pDest[NATIVE_I2P_DESTINATION_SIZE];
+#endif
 
     public:
         CNetAddr();
@@ -57,6 +73,12 @@ class CNetAddr
         bool IsRFC6052() const; // IPv6 well-known prefix (64:FF9B::/96)
         bool IsRFC6145() const; // IPv6 IPv4-translated address (::FFFF:0:0:0/96)
         bool IsTor() const;
+
+#ifdef USE_NATIVE_I2P
+        bool IsNativeI2P() const;
+        std::string GetI2PDestination() const;
+#endif
+
         bool IsLocal() const;
         bool IsRoutable() const;
         bool IsValid() const;
@@ -83,6 +105,14 @@ class CNetAddr
         IMPLEMENT_SERIALIZE
             (
              READWRITE(FLATDATA(ip));
+
+#ifdef USE_NATIVE_I2P
+             if (!(nType & SER_IPADDRONLY))
+             {
+                READWRITE(FLATDATA(i2pDest));
+             }
+#endif
+
             )
 };
 
@@ -124,6 +154,14 @@ class CService : public CNetAddr
             (
              CService* pthis = const_cast<CService*>(this);
              READWRITE(FLATDATA(ip));
+
+#ifdef USE_NATIVE_I2P
+             if (!(nType & SER_IPADDRONLY))
+             {
+                 READWRITE(FLATDATA(i2pDest));
+             }
+#endif
+
              unsigned short portN = htons(port);
              READWRITE(portN);
              if (fRead)
@@ -147,5 +185,9 @@ bool Lookup(const char *pszName, std::vector<CService>& vAddr, int portDefault =
 bool LookupNumeric(const char *pszName, CService& addr, int portDefault = 0);
 bool ConnectSocket(const CService &addr, SOCKET& hSocketRet, int nTimeout = nConnectTimeout);
 bool ConnectSocketByName(CService &addr, SOCKET& hSocketRet, const char *pszDest, int portDefault = 0, int nTimeout = nConnectTimeout);
+
+#ifdef USE_NATIVE_I2P
+bool SetSocketOptions(SOCKET& hSocket);
+#endif
 
 #endif

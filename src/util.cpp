@@ -2,6 +2,9 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
+//
+// I2P-patch
+// Copyright (c) 2012-2013 giv
 
 #include "util.h"
 #include "sync.h"
@@ -1295,6 +1298,13 @@ string FormatFullVersion()
 {
     return CLIENT_BUILD;
 }
+
+#ifdef USE_NATIVE_I2P
+std::string FormatI2PNativeFullVersion()
+{
+    return I2P_NATIVE_BUILD;
+}
+#endif
 
 // Format the subversion field according to BIP 14 spec (https://en.bitcoin.it/wiki/BIP_0014)
 std::string FormatSubVersion(const std::string& name, int nClientVersion, const std::vector<std::string>& comments)

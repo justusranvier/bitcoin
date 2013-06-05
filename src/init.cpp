@@ -2,6 +2,9 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
+//
+// I2P-patch
+// Copyright (c) 2012-2013 giv
 
 #include "txdb.h"
 #include "walletdb.h"
@@ -20,6 +23,10 @@
 
 #ifndef WIN32
 #include <signal.h>
+#endif
+
+#ifdef USE_NATIVE_I2P
+#include "i2p.h"
 #endif
 
 using namespace std;
@@ -226,6 +233,14 @@ bool static InitWarning(const std::string &str)
     return true;
 }
 
+#ifdef USE_NATIVE_I2P
+bool static BindNativeI2P(/*bool fError = true*/)
+{
+    if (IsLimited(NET_NATIVE_I2P))
+        return false;
+    return BindListenNativeI2P();
+}
+#endif
 bool static Bind(const CService &addr, unsigned int flags) {
     if (!(flags & BF_EXPLICIT) && IsLimited(addr))
         return false;
@@ -450,6 +465,18 @@ bool AppInit2()
 
     // ********************************************************* Step 2: parameter interactions
 
+#ifdef USE_NATIVE_I2P
+    if (GetBoolArg(I2P_SAM_GENERATE_DESTINATION_PARAM))
+    {
+        const std::pair<const std::string, const std::string> generatedDest = I2PSession::Instance().destGenerate();
+        const std::string& pub = generatedDest.first;
+        const std::string& priv = generatedDest.second;
+
+        uiInterface.ThreadSafeShowGeneratedI2PAddress("Generated I2P address", pub, priv, I2PSession::GenerateB32AddressFromDestination(pub), GetConfigFile().string());
+        return false;
+    }
+#endif
+
     fTestNet = GetBoolArg("-testnet");
     if (fTestNet) {
         SoftSetBoolArg("-irc", true);
@@ -587,6 +614,9 @@ bool AppInit2()
         ShrinkDebugFile();
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     printf("Bitcoin version %s (%s)\n", FormatFullVersion().c_str(), CLIENT_DATE.c_str());
+#ifdef USE_NATIVE_I2P
+    printf("I2P patch version %s (%s)\n", FormatI2PNativeFullVersion().c_str(), I2P_NATIVE_DATE.c_str());
+#endif
     printf("Using OpenSSL version %s\n", SSLeay_version(SSLEAY_VERSION));
     if (!fLogTimestamps)
         printf("Startup time: %s\n", DateTimeStrFormat("%Y-%m-%d %H:%M:%S", GetTime()).c_str());
@@ -724,6 +754,10 @@ bool AppInit2()
             fBound |= Bind(CService(in6addr_any, GetListenPort()), BF_NONE);
 #endif
             fBound |= Bind(CService(inaddr_any, GetListenPort()), !fBound ? BF_REPORT_ERROR : BF_NONE);
+#ifdef USE_NATIVE_I2P
+            if (!IsLimited(NET_NATIVE_I2P))
+                fBound |= BindNativeI2P();
+#endif
         }
         if (!fBound)
             return InitError(_("Failed to listen on any port. Use -listen=0 if you want this."));

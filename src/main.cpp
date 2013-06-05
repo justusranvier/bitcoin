@@ -2,6 +2,9 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
+//
+// I2P-patch
+// Copyright (c) 2012-2013 giv
 
 #include "alert.h"
 #include "checkpoints.h"
@@ -3103,6 +3106,13 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         pfrom->PushMessage("verack");
         pfrom->vSend.SetVersion(min(pfrom->nVersion, PROTOCOL_VERSION));
 
+#ifdef USE_NATIVE_I2P
+        if (pfrom->nServices & NODE_I2P)
+            pfrom->vSend.SetType(pfrom->vSend.GetType() & ~SER_IPADDRONLY);
+        else
+            pfrom->vSend.SetType(pfrom->vSend.GetType() & SER_IPADDRONLY);
+#endif
+
         if (!pfrom->fInbound)
         {
             // Advertise our address
@@ -3166,6 +3176,13 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
     else if (strCommand == "verack")
     {
         pfrom->vRecv.SetVersion(min(pfrom->nVersion, PROTOCOL_VERSION));
+
+#ifdef USE_NATIVE_I2P
+        if (pfrom->nServices & NODE_I2P)
+            pfrom->vRecv.SetType(pfrom->vRecv.GetType() & ~SER_IPADDRONLY);
+        else
+            pfrom->vRecv.SetType(pfrom->vRecv.GetType() & SER_IPADDRONLY);
+#endif
     }
 
 
