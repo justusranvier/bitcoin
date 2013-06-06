@@ -4,9 +4,14 @@ macx:TARGET = "Bitcoin-Qt"
 VERSION = 0.8.5
 INCLUDEPATH += src src/json src/qt
 QT += network
-DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE USE_NATIVE_I2P
+DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE
 CONFIG += no_include_pwd
 CONFIG += thread
+
+# use: qmake "USE_NATIVE_I2P=1"
+contains(USE_NATIVE_I2P, 1) {
+    DEFINES += USE_NATIVE_I2P
+}
 
 # for boost 1.37, add -mt to the boost libraries
 # use: qmake BOOST_LIB_SUFFIX=-mt
