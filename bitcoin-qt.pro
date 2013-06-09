@@ -144,6 +144,12 @@ contains(DEFINES, USE_NATIVE_I2P) {
     QMAKE_EXTRA_TARGETS += geni2pbuild
 }
 
+gensami2pbuild.depends = FORCE
+gensami2pbuild.commands = cd $$PWD/src/i2psam && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS\" -f makefile.unix
+gensami2pbuild.target = $$PWD/src/i2psam/libi2psam.a
+QMAKE_EXTRA_TARGETS += gensami2pbuild
+QMAKE_CLEAN += $$PWD/src/i2psam/libi2psam.a; cd $$PWD/src/i2psam ; $(MAKE) clean
+
 QMAKE_CXXFLAGS_WARN_ON = -fdiagnostics-show-option -Wall -Wextra -Wformat -Wformat-security -Wno-unused-parameter -Wstack-protector
 
 # Input
