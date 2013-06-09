@@ -14,7 +14,7 @@ I2POptionsWidget::I2POptionsWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QObject::connect(ui->pushButtonCurrentI2PAddress, SIGNAL(clicked()), this, SLOT(ShowCurrentI2PAddress()));
+    QObject::connect(ui->pushButtonCurrentI2PAddress,  SIGNAL(clicked()), this, SLOT(ShowCurrentI2PAddress()));
     QObject::connect(ui->pushButtonGenerateI2PAddress, SIGNAL(clicked()), this, SLOT(GenerateNewI2PAddress()));
 
     QObject::connect(ui->checkBoxAllowZeroHop         , SIGNAL(stateChanged(int))   , this, SIGNAL(settingsChanged()));

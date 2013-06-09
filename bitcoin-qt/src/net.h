@@ -49,6 +49,7 @@ bool StopNode();
 #ifdef USE_NATIVE_I2P
 bool BindListenNativeI2P();
 bool BindListenNativeI2P(SOCKET& hSocket);
+bool IsI2POnly();
 
 extern int nI2PNodeCount;
 #endif

@@ -159,7 +159,7 @@
       <widget class="QPushButton" name="pushButtonCurrentI2PAddress">
        <property name="text">
         <string>Current
-I2P-address</string>
+I2P-address...</string>
        </property>
       </widget>
      </item>
@@ -167,7 +167,7 @@ I2P-address</string>
       <widget class="QPushButton" name="pushButtonGenerateI2PAddress">
        <property name="text">
         <string>Generate
-I2P-address</string>
+I2P-address...</string>
        </property>
       </widget>
      </item>

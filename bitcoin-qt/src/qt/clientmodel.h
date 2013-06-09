@@ -58,10 +58,12 @@ public:
 
 #ifdef USE_NATIVE_I2P
     QString formatI2PNativeFullVersion() const;
+    int getNumI2PConnections() const;
 
     // I2P TODO
-    QString getCurrentI2PAddress() const;
-    int getNumI2PConnections() const;
+    QString getCurrentI2PAddress() const;   // ??
+//    I2PSession& getI2PSession() const;      // ??
+//    bool isPermanent
 #endif
 
 private:
