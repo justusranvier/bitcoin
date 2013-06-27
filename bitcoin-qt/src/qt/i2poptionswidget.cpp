@@ -64,8 +64,8 @@ void I2POptionsWidget::setMapper(MonitoredDataMapper& mapper)
 
 void I2POptionsWidget::ShowCurrentI2PAddress()
 {
-    const std::string pub = I2PSession::Instance().getMyAddress();
-    const std::string& priv = I2PSession::Instance().getMyDestination();
+    const std::string& pub = I2PSession::Instance().getMyDestination().pub/*getMyAddress()*/;
+    const std::string& priv = I2PSession::Instance().getMyDestination().priv;
 
     ShowI2PAddresses i2pCurrDialog(
                 "Your current I2P-address",
@@ -79,9 +79,9 @@ void I2POptionsWidget::ShowCurrentI2PAddress()
 
 void I2POptionsWidget::GenerateNewI2PAddress()
 {
-    const std::pair<const std::string, const std::string> generatedDest = I2PSession::Instance().destGenerate();
-    const std::string& pub = generatedDest.first;
-    const std::string& priv = generatedDest.second;
+    const SAM::FullDestination/*std::pair<const std::string, const std::string>*/ generatedDest = I2PSession::Instance().destGenerate();
+    const std::string& pub = generatedDest./*first*/pub;
+    const std::string& priv = generatedDest./*second*/priv;
 
     ShowI2PAddresses i2pNewDialog(
                 "Generated I2P address",

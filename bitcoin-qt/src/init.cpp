@@ -468,9 +468,9 @@ bool AppInit2()
 #ifdef USE_NATIVE_I2P
     if (GetBoolArg(I2P_SAM_GENERATE_DESTINATION_PARAM))
     {
-        const std::pair<const std::string, const std::string> generatedDest = I2PSession::Instance().destGenerate();
-        const std::string& pub = generatedDest.first;
-        const std::string& priv = generatedDest.second;
+        const /*std::pair<const std::string, const std::string>*/SAM::FullDestination generatedDest = I2PSession::Instance().destGenerate();
+        const std::string& pub = generatedDest./*first*/pub;
+        const std::string& priv = generatedDest./*second*/priv;
 
         uiInterface.ThreadSafeShowGeneratedI2PAddress("Generated I2P address", pub, priv, I2PSession::GenerateB32AddressFromDestination(pub), GetConfigFile().string());
         return false;
