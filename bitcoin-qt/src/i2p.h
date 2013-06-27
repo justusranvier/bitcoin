@@ -27,11 +27,11 @@
 #define I2P_SAM_GENERATE_DESTINATION_PARAM "-generatei2pdestination"
 
 
-class I2PSession : private /*SAM::StreamSession*/ SAM::StreamSessionAdapter
+class I2PSession : private SAM::StreamSessionAdapter
 {
 private:
     I2PSession()
-        : SAM::/*StreamSession*/StreamSessionAdapter(
+        : SAM::StreamSessionAdapter(
               GetArg(I2P_SESSION_NAME_PARAM, I2P_SESSION_NAME_DEFAULT),
               GetArg(I2P_SAM_HOST_PARAM, I2P_SAM_HOST_DEFAULT),
               (uint16_t)GetArg(I2P_SAM_PORT_PARAM, I2P_SAM_PORT_DEFAULT),
@@ -44,7 +44,7 @@ private:
     I2PSession& operator=(const I2PSession&);
 public:
     // In C++11 this code is thread safe, in C++03 it isn't
-    static SAM::/*StreamSession*/StreamSessionAdapter& Instance()
+    static SAM::StreamSessionAdapter& Instance()
     {
         static I2PSession i2pSession;
         return i2pSession;
