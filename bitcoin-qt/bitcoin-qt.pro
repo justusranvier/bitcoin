@@ -307,6 +307,7 @@ HEADERS += \
     src/qt/i2poptionswidget.h
 
 SOURCES += \
+    src/i2p.cpp \
     src/qt/showi2paddresses.cpp \
     src/qt/i2poptionswidget.cpp
 
