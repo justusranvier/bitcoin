@@ -3,13 +3,11 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 //--------------------------------------------------------------------------------------------------
 #include <boost/thread/shared_mutex.hpp>
-#include <boost/thread/mutex.hpp>
-
 #include "i2p.h"
 #include "util.h"
 #include "hash.h"
 
-namespace I2PDetails
+namespace SAM
 {
 
 class StreamSessionAdapter::SessionHolder
@@ -173,12 +171,12 @@ const std::string& StreamSessionAdapter::getOptions() const
     return sessionHolder_->getSession().getOptions();
 }
 
-} // namespace I2PDetails
+} // namespace SAM
 
 //--------------------------------------------------------------------------------------------------
 
 I2PSession::I2PSession()
-    : I2PDetails::StreamSessionAdapter(
+    : SAM::StreamSessionAdapter(
           GetArg(I2P_SESSION_NAME_PARAM, I2P_SESSION_NAME_DEFAULT),
           GetArg(I2P_SAM_HOST_PARAM, I2P_SAM_HOST_DEFAULT),
           (uint16_t)GetArg(I2P_SAM_PORT_PARAM, I2P_SAM_PORT_DEFAULT),

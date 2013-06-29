@@ -5,8 +5,6 @@
 #ifndef I2P_H
 #define I2P_H
 
-//#include "util.h"
-//#include "hash.h"
 #include "i2psam.h"
 
 #define I2P_SESSION_NAME_PARAM          "-i2psessionname"
@@ -26,7 +24,7 @@
 
 #define I2P_SAM_GENERATE_DESTINATION_PARAM "-generatei2pdestination"
 
-namespace I2PDetails
+namespace SAM
 {
 
 class StreamSessionAdapter
@@ -69,46 +67,26 @@ private:
     std::auto_ptr<SessionHolder> sessionHolder_;
 };
 
-} // namespace I2PDetails
+} // namespace SAM
 
-class I2PSession : private I2PDetails::StreamSessionAdapter
+class I2PSession : private SAM::StreamSessionAdapter
 {
-private:
-    I2PSession();
-//        : I2PDetails::StreamSessionAdapter(
-//              GetArg(I2P_SESSION_NAME_PARAM, I2P_SESSION_NAME_DEFAULT),
-//              GetArg(I2P_SAM_HOST_PARAM, I2P_SAM_HOST_DEFAULT),
-//              (uint16_t)GetArg(I2P_SAM_PORT_PARAM, I2P_SAM_PORT_DEFAULT),
-//              GetArg(I2P_SAM_MY_DESTINATION_PARAM, I2P_SAM_MY_DESTINATION_DEFAULT),
-//              GetArg(I2P_SAM_I2P_OPTIONS_PARAM, SAM_DEFAULT_I2P_OPTIONS))
-//    {}
-    ~I2PSession();// {}
-
-    I2PSession(const I2PSession&);
-    I2PSession& operator=(const I2PSession&);
 public:
     // In C++11 this code is thread safe, in C++03 it isn't
-    static I2PDetails::StreamSessionAdapter& Instance()
+    static SAM::StreamSessionAdapter& Instance()
     {
         static I2PSession i2pSession;
         return i2pSession;
     }
 
     static std::string GenerateB32AddressFromDestination(const std::string& destination);
-//    {
-//        std::string canonicalDest = destination;
-//        for (size_t pos = canonicalDest.find_first_of('-'); pos != std::string::npos; pos = canonicalDest.find_first_of('-', pos))
-//            canonicalDest[pos] = '+';
-//        for (size_t pos = canonicalDest.find_first_of('~'); pos != std::string::npos; pos = canonicalDest.find_first_of('~', pos))
-//            canonicalDest[pos] = '/';
-//        std::string rawHash = DecodeBase64(canonicalDest);
-//        uint256 hash;
-//        SHA256((const unsigned char*)rawHash.c_str(), rawHash.size(), (unsigned char*)&hash);
-//        std::string result = EncodeBase32(hash.begin(), hash.end() - hash.begin()) + ".b32.i2p";
-//        for (size_t pos = result.find_first_of('='); pos != std::string::npos; pos = result.find_first_of('=', pos-1))
-//            result.erase(pos, 1);
-//        return result;
-//    }
+
+private:
+    I2PSession();
+    ~I2PSession();
+
+    I2PSession(const I2PSession&);
+    I2PSession& operator=(const I2PSession&);
 };
 
 #endif // I2P_H

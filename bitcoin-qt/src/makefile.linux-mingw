@@ -103,6 +103,10 @@ OBJS= \
     obj/leveldb.o \
     obj/txdb.o
 
+ifdef USE_NATIVE_I2P
+	OBJS += obj/i2p.o
+endif
+
 all: bitcoind.exe
 
 DEFS += -I"$(CURDIR)/leveldb/include"
