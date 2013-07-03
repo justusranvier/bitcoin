@@ -71,16 +71,6 @@ void I2POptionsWidget::setModel(ClientModel* model)
 
 void I2POptionsWidget::ShowCurrentI2PAddress()
 {
-//    const std::string& pub = I2PSession::Instance().getMyDestination().pub;
-//    const std::string& priv = I2PSession::Instance().getMyDestination().priv;
-
-//    ShowI2PAddresses i2pCurrDialog(
-//                "Your current I2P-address",
-//                QString::fromStdString(pub),
-//                QString::fromStdString(priv),
-//                QString::fromStdString(I2PSession::GenerateB32AddressFromDestination(pub)),
-//                QString::fromStdString(GetConfigFile().string()),
-//                this);
     if (clientModel)
     {
         const QString pub = clientModel->getPublicI2PKey();
@@ -95,19 +85,6 @@ void I2POptionsWidget::ShowCurrentI2PAddress()
 
 void I2POptionsWidget::GenerateNewI2PAddress()
 {
-//    const SAM::FullDestination generatedDest = I2PSession::Instance().destGenerate();
-//    const std::string& pub = generatedDest.pub;
-//    const std::string& priv = generatedDest.priv;
-
-//    ShowI2PAddresses i2pNewDialog(
-//                "Generated I2P address",
-//                QString::fromStdString(pub),
-//                QString::fromStdString(priv),
-//                QString::fromStdString(I2PSession::GenerateB32AddressFromDestination(pub)),
-//                QString::fromStdString(GetConfigFile().string()),
-//                this);
-//    i2pNewDialog.exec();
-
     if (clientModel)
     {
         QString pub, priv;
