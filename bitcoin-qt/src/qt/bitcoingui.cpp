@@ -396,12 +396,28 @@ void BitcoinGUI::setClientModel(ClientModel *clientModel)
 #ifdef USE_NATIVE_I2P
         setNumI2PConnections(clientModel->getNumI2PConnections());
         connect(clientModel, SIGNAL(numI2PConnectionsChanged(int)), this, SLOT(setNumI2PConnections(int)));
-//        const QString strI2POnly = clientModel->isI2POnly() ? "<b>I2P</b>" : "<b>MIX</b>";
-        const QString strI2POnly = clientModel->isI2POnly() ? "I2P" : "MIX";
-        labelI2POnly->setText(strI2POnly);
-//        const QString strI2PGen = clientModel->isI2PAddressGenerated() ? "<b>DYN</b>" : "<b>STA</b>";
-        const QString strI2PGen = clientModel->isI2PAddressGenerated() ? "DYN" : "STA";
-        labelI2PGenerated->setText(strI2PGen);
+
+        if (clientModel->isI2POnly())
+        {
+            labelI2POnly->setText("I2P");
+            labelI2POnly->setToolTip(tr("Wallet is using I2P-network only"));
+        }
+        else
+        {
+            labelI2POnly->setText("CLR");
+            labelI2POnly->setToolTip(tr("Wallet is using mixed or non-I2P (clear) network"));
+        }
+
+        if (clientModel->isI2PAddressGenerated())
+        {
+            labelI2PGenerated->setText("DYN");
+            labelI2PGenerated->setToolTip(tr("Wallet is running with a random generated I2P-address"));
+        }
+        else
+        {
+            labelI2PGenerated->setText("STA");
+            labelI2PGenerated->setToolTip(tr("Wallet is running with a static I2P-address"));
+        }
 #endif
 
         setNumBlocks(clientModel->getNumBlocks(), clientModel->getNumBlocksOfPeers());
