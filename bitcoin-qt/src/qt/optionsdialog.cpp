@@ -6,6 +6,10 @@
 #include "netbase.h"
 #include "optionsmodel.h"
 
+#ifdef USE_NATIVE_I2P
+#include "clientmodel.h"
+#endif
+
 #include <QDir>
 #include <QIntValidator>
 #include <QLocale>
@@ -133,6 +137,16 @@ void OptionsDialog::setModel(OptionsModel *model)
     /* disable apply button after settings are loaded as there is nothing to save */
     disableApplyButton();
 }
+
+#ifdef USE_NATIVE_I2P
+void OptionsDialog::setClientModel(ClientModel* clientModel)
+{
+    if (clientModel)
+    {
+        tabI2P->setModel(clientModel);
+    }
+}
+#endif
 
 void OptionsDialog::setMapper()
 {

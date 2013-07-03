@@ -13,6 +13,9 @@ class OptionsDialog;
 class OptionsModel;
 class MonitoredDataMapper;
 class QValidatedLineEdit;
+#ifdef USE_NATIVE_I2P
+class ClientModel;
+#endif
 
 /** Preferences dialog. */
 class OptionsDialog : public QDialog
@@ -23,6 +26,9 @@ public:
     explicit OptionsDialog(QWidget *parent = 0);
     ~OptionsDialog();
 
+#ifdef USE_NATIVE_I2P
+    void setClientModel(ClientModel* clientModel);
+#endif
     void setModel(OptionsModel *model);
     void setMapper();
 

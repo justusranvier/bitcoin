@@ -13,24 +13,24 @@ namespace SAM
 class StreamSessionAdapter::SessionHolder
 {
 public:
-    explicit SessionHolder(std::auto_ptr<SAM::NewStreamSession> session);
+    explicit SessionHolder(std::auto_ptr<SAM::StreamSession> session);
 
-    const SAM::NewStreamSession& getSession() const;
-    SAM::NewStreamSession& getSession();
+    const SAM::StreamSession& getSession() const;
+    SAM::StreamSession& getSession();
 private:
     void heal() const;
     void reborn() const;
 
-    mutable std::auto_ptr<SAM::NewStreamSession> session_;
+    mutable std::auto_ptr<SAM::StreamSession> session_;
     typedef boost::shared_mutex mutex_type;
     mutable mutex_type mtx_;
 };
 
-StreamSessionAdapter::SessionHolder::SessionHolder(std::auto_ptr<SAM::NewStreamSession> session)
+StreamSessionAdapter::SessionHolder::SessionHolder(std::auto_ptr<SAM::StreamSession> session)
     : session_(session)
 {}
 
-const SAM::NewStreamSession& StreamSessionAdapter::SessionHolder::getSession() const
+const SAM::StreamSession& StreamSessionAdapter::SessionHolder::getSession() const
 {
     boost::upgrade_lock<mutex_type> lock(mtx_);
     if (session_->isSick())
@@ -41,7 +41,7 @@ const SAM::NewStreamSession& StreamSessionAdapter::SessionHolder::getSession() c
     return *session_;
 }
 
-SAM::NewStreamSession& StreamSessionAdapter::SessionHolder::getSession()
+SAM::StreamSession& StreamSessionAdapter::SessionHolder::getSession()
 {
     boost::upgrade_lock<mutex_type> lock(mtx_);
     if (session_->isSick())
@@ -61,7 +61,7 @@ void StreamSessionAdapter::SessionHolder::reborn() const
 {
     if (!session_->isSick())
         return;
-    std::auto_ptr<SAM::NewStreamSession> newSession(new SAM::NewStreamSession(*session_));
+    std::auto_ptr<SAM::StreamSession> newSession(new SAM::StreamSession(*session_));
     if (!newSession->isSick() && session_->isSick())
         session_ = newSession;
 }
@@ -78,8 +78,8 @@ StreamSessionAdapter::StreamSessionAdapter(
         const std::string& maxVer        /*= SAM_DEFAULT_MAX_VER*/)
     : sessionHolder_(
           new SessionHolder(
-              std::auto_ptr<SAM::NewStreamSession>(
-                  new SAM::NewStreamSession(nickname, SAMHost, SAMPort, myDestination, i2pOptions, minVer, maxVer))))
+              std::auto_ptr<SAM::StreamSession>(
+                  new SAM::StreamSession(nickname, SAMHost, SAMPort, myDestination, i2pOptions, minVer, maxVer))))
 {}
 
 StreamSessionAdapter::~StreamSessionAdapter()

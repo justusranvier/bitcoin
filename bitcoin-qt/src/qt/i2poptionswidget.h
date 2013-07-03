@@ -9,6 +9,8 @@ namespace Ui {
 class I2POptionsWidget;
 }
 
+class ClientModel;
+
 class I2POptionsWidget : public QWidget
 {
     Q_OBJECT
@@ -18,9 +20,11 @@ public:
     ~I2POptionsWidget();
 
     void setMapper(MonitoredDataMapper& mapper);
+    void setModel(ClientModel* model);
     
 private:
     Ui::I2POptionsWidget *ui;
+    ClientModel* clientModel;
 
 private slots:
     void ShowCurrentI2PAddress();

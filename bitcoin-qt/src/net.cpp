@@ -1993,6 +1993,8 @@ bool IsI2POnly()
     for (int n = 0; n < NET_MAX; n++)
     {
         Network net = (Network)n;
+        if (net == NET_UNROUTABLE)
+            continue;
         i2pOnly &= ((net == NET_NATIVE_I2P) != IsLimited(net)); // isI2P xor IsLimited
     }
     return i2pOnly;
