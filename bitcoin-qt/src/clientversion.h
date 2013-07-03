@@ -20,7 +20,7 @@
 #ifdef USE_NATIVE_I2P
 
 #define I2P_NATIVE_VERSION_MAJOR       0
-#define I2P_NATIVE_VERSION_MINOR       1
+#define I2P_NATIVE_VERSION_MINOR       2
 
 #endif
 
