@@ -74,7 +74,9 @@ private:
     QLabel *labelConnectionsIcon;
     QLabel *labelBlocksIcon;
 #ifdef USE_NATIVE_I2P
-    QLabel* labelI2P;
+    QLabel* labelI2PConnections;
+    QLabel* labelI2POnly;
+    QLabel* labelI2PGenerated;
 #endif
     QLabel *progressBarLabel;
     QProgressBar *progressBar;

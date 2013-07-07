@@ -144,6 +144,10 @@ BASEOBJS := \
     obj/noui.o \
     obj/txdb.o
 
+ifdef USE_NATIVE_I2P
+    OBJS += obj/i2p.o
+endif
+
 OBJS := \
     obj/leveldb.o \
     obj/init.o \

@@ -6,6 +6,10 @@
 #include "netbase.h"
 #include "optionsmodel.h"
 
+#ifdef USE_NATIVE_I2P
+#include "clientmodel.h"
+#endif
+
 #include <QDir>
 #include <QIntValidator>
 #include <QLocale>
@@ -21,6 +25,10 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
     fRestartWarningDisplayed_Proxy(false),
     fRestartWarningDisplayed_Lang(false),
     fProxyIpValid(true)
+#ifdef USE_NATIVE_I2P
+  , fRestartWarningDisplayed_I2P(false)
+  , tabI2P(new I2POptionsWidget())
+#endif
 {
     ui->setupUi(this);
 
@@ -95,8 +103,7 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
     connect(this, SIGNAL(proxyIpValid(QValidatedLineEdit *, bool)), this, SLOT(handleProxyIpValid(QValidatedLineEdit *, bool)));
 
 #ifdef USE_NATIVE_I2P
-//    I2POptionsWidget* tabI2P = new I2POptionsWidget();
-//    ui->tabWidget->addTab(tabI2P, QString("I2P"));
+    ui->tabWidget->addTab(tabI2P, QString("I2P"));
 #endif
 }
 
@@ -123,10 +130,23 @@ void OptionsDialog::setModel(OptionsModel *model)
 
     /* warn only when language selection changes by user action (placed here so init via mapper doesn't trigger this) */
     connect(ui->lang, SIGNAL(valueChanged()), this, SLOT(showRestartWarning_Lang()));
+#ifdef USE_NATIVE_I2P
+    QObject::connect(tabI2P, SIGNAL(settingsChanged()), this, SLOT(showRestartWarning_I2P()));
+#endif
 
     /* disable apply button after settings are loaded as there is nothing to save */
     disableApplyButton();
 }
+
+#ifdef USE_NATIVE_I2P
+void OptionsDialog::setClientModel(ClientModel* clientModel)
+{
+    if (clientModel)
+    {
+        tabI2P->setModel(clientModel);
+    }
+}
+#endif
 
 void OptionsDialog::setMapper()
 {
@@ -152,6 +172,10 @@ void OptionsDialog::setMapper()
     mapper->addMapping(ui->lang, OptionsModel::Language);
     mapper->addMapping(ui->unit, OptionsModel::DisplayUnit);
     mapper->addMapping(ui->displayAddresses, OptionsModel::DisplayAddresses);
+
+#ifdef USE_NATIVE_I2P
+    tabI2P->setMapper(*mapper);
+#endif
 }
 
 void OptionsDialog::enableApplyButton()
@@ -198,7 +222,9 @@ void OptionsDialog::on_resetButton_clicked()
 
         /* disable restart warning messages display */
         fRestartWarningDisplayed_Lang = fRestartWarningDisplayed_Proxy = true;
-
+#ifdef USE_NATIVE_I2P
+        fRestartWarningDisplayed_I2P = true;
+#endif
         /* reset all options and save the default values (QSettings) */
         model->Reset();
         mapper->toFirst();
@@ -206,6 +232,9 @@ void OptionsDialog::on_resetButton_clicked()
 
         /* re-enable restart warning messages display */
         fRestartWarningDisplayed_Lang = fRestartWarningDisplayed_Proxy = false;
+#ifdef USE_NATIVE_I2P
+        fRestartWarningDisplayed_I2P = false;
+#endif
     }
 }
 
@@ -243,6 +272,17 @@ void OptionsDialog::showRestartWarning_Lang()
         fRestartWarningDisplayed_Lang = true;
     }
 }
+
+#ifdef USE_NATIVE_I2P
+void OptionsDialog::showRestartWarning_I2P()
+{
+    if(!fRestartWarningDisplayed_I2P)
+    {
+        QMessageBox::warning(this, tr("Warning"), tr("This setting will take effect after restarting Bitcoin."), QMessageBox::Ok);
+        fRestartWarningDisplayed_I2P = true;
+    }
+}
+#endif
 
 void OptionsDialog::updateDisplayUnit()
 {
