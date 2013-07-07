@@ -1306,12 +1306,39 @@ static const char *strMainNetDNSSeed[][2] = {
     {"dashjr.org", "dnsseed.bitcoin.dashjr.org"},
     {"xf2.org", "bitseed.xf2.org"},
 #ifdef USE_NATIVE_I2P
-    {"bhqfvosghsfdbi3qubnk3ro6juklz5w7b6l3x6mibkxzzk3mob5a.b32.i2p", "bhqfvosghsfdbi3qubnk3ro6juklz5w7b6l3x6mibkxzzk3mob5a.b32.i2p"},
-    {"lskv7enstesq6q63qtfkftczh3kyrvsjphpllclx3zqpd6menr3q.b32.i2p", "lskv7enstesq6q63qtfkftczh3kyrvsjphpllclx3zqpd6menr3q.b32.i2p"},
-    {"z5pg37axylu7wuncppbzvwxawb5mo3euxuwbyi2s2um7bhnl3caa.b32.i2p", "z5pg37axylu7wuncppbzvwxawb5mo3euxuwbyi2s2um7bhnl3caa.b32.i2p"},
-    {"7rffwl53vi6qyicjzrbu6ikrmet2mki5g4yrlnikpiqnm5fv7jzq.b32.i2p", "7rffwl53vi6qyicjzrbu6ikrmet2mki5g4yrlnikpiqnm5fv7jzq.b32.i2p"},
-    {"ockd2ycrdlxjuqvnccxkagf6vivlqocqmzkcmp7e2bfuxon3dmtq.b32.i2p", "ockd2ycrdlxjuqvnccxkagf6vivlqocqmzkcmp7e2bfuxon3dmtq.b32.i2p"},
-    {"ofa7kfuqewnxyqiadnsj6ibcwtj6ndcabwcfabljmuyol2pussaa.b32.i2p", "ofa7kfuqewnxyqiadnsj6ibcwtj6ndcabwcfabljmuyol2pussaa.b32.i2p"},
+    {"SVAxpjZzKn~HjvuqpoX5Y948CQnrPpw~9Y9n7itkniijx3NbgTQGJVmZJoc1ERXE87CqcLeeaWtAwqIwhYXL5Y5XkvaUAlAA5BD-9afCmyP42rtEluQLBAprd70UuN20u"
+     "juVm0HPyKcIyezphMHsK~GbYMNFiyTz8ko~Kd2wHaeXKWQh6pXyjQJzT4Bwcv1Y9JtPC5b1P5VpwQaLlMJJvblRi8jbRAbimjsxxrMSG6YX8Ks99tsdnQ6YOHGzTPoGpH"
+     "FgBiROSYwXtC~BbFSv0XfhmN17ZfG6ZCXTbp-xVs-4txSyS~hnS9dL9xHWIv9MNbJzZhI7YztxWgMR3ZNMwR-W2fUeHAcZusmvbm3r-NpIC0O0p9LDDcu7Vxszk~QD~qy"
+     "lFfIT3j8kwu4RDExgqyelVdXVVSlyriHWoIdt9BklqwI1dbAEoLAfG7IZ3921dP4-MH7~AS8Jn3foNe8CAUvu2baRNRIAu75GknCFV5gGIuRRJjFNnrt~vaZfIQP6AAAA", "bhqfvosghsfdbi3qubnk3ro6juklz5w7b6l3x6mibkxzzk3mob5a.b32.i2p"},
+    {"6KDnZnTsXqP4Av1re1kIRICjdXX3gnpKl97L6ewnJ~0GNVSRm1mz4dYLo6oc4yU54PaxvenQOZ04pT8xrcl99GCznuBE9vTKjnmF2A5zh9NAkOTKPdoRq9sd4R6Gyh26f"
+     "fCcgXzMIanHq8OKIneBB9WmIImshvp~VKdnQkB9r6LLDfHBoUBB~1V3sPC8lWxvBpdXHiDofq6tS~hlULjzno9NjYXg6fuk8QMrPxvzi45jaThDDvuK7G4F3JLkvAgrdj"
+     "oYtVwvOk52yUQKElSB5FNp~RvI0Gr7kaeappWSqSkCe5AgLPqI194V7Nt~GwP1MzZLDFoVXB5fhQZ-Wza55Xzh2~l5TgBndaPvo~kT7cV8Gl8RxpUz8J-V3q3L2~7xLyT"
+     "NFGvZahGIh2Sl6npEl876iXFJYfZXVGi8G5BCxhUVM03ycNdpzaGyqOT0e1uMMzrXYrS6zGQ~AY05~8Bza6ulEJ1XNqQCkq-5mtcN9Exe-M16XWhpv-zECnr46xKSAAAA", "lskv7enstesq6q63qtfkftczh3kyrvsjphpllclx3zqpd6menr3q.b32.i2p"},
+    {"K4bxj-QLzTqA5kBiuawTBGOm5Z9VIGIFfC2mwwQrgmVtf94f9FgFeiglXQ6GF3Zls4aoH3pHEdeWe7hr2Y9q6zUj9tIxPLd2u70nVUCKx6pphO5B7vanlBRoivozwYPvd"
+     "hfX~skKOE1YSIqvWX1RM3fUN1HXh1plL75-UlB-~VIB4usqBfxv5Qs5W8QK7AX0KOoFZ~2qg70VUrxbbc-sSyK6-ZDCsDKvUqYbIfG0XeR6U8eiCYLCV9VRkUK1RLSFXY"
+     "w-KP-GnMNmoVbREIzpvJydgGK0acKhBY9WEoEcrFflXJedD95opNWYYX~ZGO-psM7dY-BMUcRY5bVlAPpj7DuXcqK82d9D3iLrDDlyt3P-I1GprAp0O14vYJqG3RoDcdM"
+     "xOSpiuVKnq3GzqrxhcIFA2SK9KYVSNoEOsz1dM49bmw0DEzx2IGMHlPQ1ctmQIbkBS9i6wr3el~1LrPrcwRoVsdekVD4ZRD42YA61OqblXM3iqMVFe8U1CIa94oiaAAAA", "z5pg37axylu7wuncppbzvwxawb5mo3euxuwbyi2s2um7bhnl3caa.b32.i2p"},
+    {"Oonb8SSUV6Y1jYVl6dV~4I2oEpMqAWPnc5IyhcKT-oqEkeEfelJKFn6KXfwOSoavWNj0GOvr~EPnklwzf13HwvKixWe2ELz7BkMJZJyFmJ37BTDDUg51828Xu1DvOVpE4"
+     "-OTetCm6QD-3dJAIDrbwCE5q9IyknQqD9qSHBc3QqBKSZMbCBw0kKcN~ec7PDUO3gLZnyfKLVcNXFay-kMiwSc4iAUsxCJed~uhLEg2pzavso0a9k39rVYgtgqqJ3sOKY"
+     "pbGhqMaAiNk5ndp4LQs81OOxLpRT5Rtz7Vtnj7bW3pG5vyNNmQfyywDm8DArEwEMSjeWvF6pzvOS~gZCvsNkJ05h~LKohbvaViujxTUojTRfqKACCIFxY2uDfbkkUzjvK"
+     "V9mML2K-Z8Kmg2AYmYrKOiU-WBzNUH8PqCm3JXjdr~pG9ZuSQONhl5jZEGsgaGqtA7Mum7R8Z2Hj5pqDKYnEw2qqu61JsYePxw89GjEVk1qUZR1NKICLIlAcvoJepAAAA", "7rffwl53vi6qyicjzrbu6ikrmet2mki5g4yrlnikpiqnm5fv7jzq.b32.i2p"},
+    {"dFXwn-7-weqcaiOg97G~2tjztZmjB3c3fgziSwWA9yk4cAudQhlKCNkk~sCUItL0BkDdNGM9CLq06xqj5FTg7zAdaPREqv1XicuLCTYfUHpS8qlTfCtIjQkvFBL3F7Ftv"
+     "miPcsF0eEysNfhaaGDRzWpL0DSWD42GF-M2LUGshHUjxxV48fl9oHPrsqWvHlRI4ZuxL2Urp6DDRwVbe5LrjRMsr0aCr6qnzof8259r2QJKwQe7OfKxedM0hfvfUwiAUV"
+     "95lcSe0E3pG21GBJ0ho8FNQjlY92pDqKsvc~0c9JngIvrGO2oEPQ6FMgJLdOCSv58I50DbiWub894veX-i1JGe4N4ih9qC3L5PK6iUGB3AOd~QhqNDALb8qk5tped-X-2"
+     "eSBlAcUK94ae-P4peoHyLiVS47rw79ToNzGBG0WztLaTXbAAMfEqKEC7knO8PK02WHKIpGs26NiQt6B~OLit3pHSwaeQkc4zU5PMNxgcHJf6kHaaq9JNtp6cE~QkqAAAA", "ockd2ycrdlxjuqvnccxkagf6vivlqocqmzkcmp7e2bfuxon3dmtq.b32.i2p"},
+    {"QAQ8YlT1yTtmXEXnw3dSm2a-YnSGSJQqKK95Pj-zesthHtnW8nhADs2oUGS05-iQJADfzVhCnIqAYdkR8xXE5oc5MsBm3QMiefixFAn55WWLboeSmJR9Y0PjI1nDEv-~v"
+     "kY-hBCAkFY98QpXUOWx9KraeL~LTcmPlAOE6zyAD7TxHaIrhDrPySstXRFdZXTi5uZOQIV2fqUq4n1pZNdpA6IogOUcgTpmhK6JVMm~TzJMpaVz8GaTGdoNmECclslUYT"
+     "XIBmIG5FuQlzBfNCNgDDswBbwKZ4s7z2hGaDb8lVlRTr-4Sivvhl9NIIl-Qzn4mpxluLdXLgHzPXxY6GANxEj~wbU-K0y2oSEIgiW333qQzv4XAnOENYQsg8W41kbfZKU"
+     "yLyrD-K9G7oJ1dpLliGrTGdGiD~QFpQgs1Hmzs9NEz~XFFN7eHFImTWyVbwj61NMtZ9rm5Zr6mzPmuU7Ydm9gtznyYJFZazuDcPWNdKojlD0AW-qUDBiPRjxpqGz2AAAA", "ofa7kfuqewnxyqiadnsj6ibcwtj6ndcabwcfabljmuyol2pussaa.b32.i2p"},
+    {"XIaesnSrNwpvj6NS1yGq5NBOyiO91kgFL~BC3LPwH3pVJnYP1BCVvqMOEea33~I43TBX1ICbAVnFPml4pEsN-W-fiQ2NtgkJEGIbokR8i3i51J45GeaTok6VR2Cx65N2z"
+     "4OLktnY7YKy0jLT6RFC0CbfP01MWTMaBh1PPzFMzrkNcjxK4itNcWItRIfyW5QnCfN9xUwMhN94jKsZb0hvSHsbd71dlWWQS-6sSktmOMxBbVNPuX2pkmL-z~5VUhoUUc"
+     "i7DSDWVIib9OSwKhU-xtGYEwzTTlXOEL0dQoZgHqsosdov8TP0oD1vfyNWywlA0UWU0W7~B53JAeCEaqSCbQ01A8EnA2KPeXlZ0NZxunihquH-L3eAb-ZjhfGjjJJ5Wyd"
+     "CdMomNIXZWLA~l3V4wu5m3ppnUUTRhLJhJpRqrzGnkfalN8twuKcXkEiQd0l2YDfjq-NbdZ-rhqR-oiOzPX0g3mRQ59JDvKQ6kIk0EHhxq01Jk~XEpKQtRcQJG8QRAAAA", "7jdke2swvteso3yji3amkfidaa4ggvsngltmiucsiutmouyiphfa.b32.i2p"},
+//    {"", "uyf3il6zs6dopiowjo4mpfn3463ixvwk2oolmclyhurxhb5n76aa.b32.i2p"},
+    {"v6GTR0ayjktJocOANADrXscTtwcvB19EwmuMpiaST1znOMOcDUhwVmCW8KoMEU6vRBXGmSy4inifWCrsRHXTN5WD0QGEHsbBf3OkhZQ89wcxy3X3U9r8TaeF129UDRDcH"
+     "9qVg8vtZLnqrhJa6ZUdIkT9iZSgGVuneTdj9-kU0G9i1Ew3kxGIHJDEXKQ2G1i1R5aQsY1O6VhCBvzqTfT2an8TqphoVC1lKJh42Ep37kWlSeXzTC618y1B1EeTpLuIw9"
+     "WDj-xxABWVPyTgxAH-NjjrWtdXrkgHVWDe4ZsU-ii0enaIGS9MvYMu5emYdilTLEX4JD3giqEtcxCE3jhJqSC2HO-K9YWuJkRVBix261C9UaRcO3zqOK4ywBNM6LqkVQ5"
+     "tyRg4CGy565~Wl-texl0FZLiWIfqUG07txmGHWS1OvsvGbm24ghsxn63FT8yEWgvB7glAIZuwhPZ~hJ~zthbs-5AGeurNlrX9PZhrPXTTVh8XhnYjdtLa-QOLg2tgAAAA", "mzvsw6bwae6ul33b5zege5xie2cevno6vgik6nrb6lw74cn3wmdq.b32.i2p"},
 #endif
     {NULL, NULL}
 };
@@ -1468,47 +1495,47 @@ unsigned int pnSeed[] =
 #ifdef USE_NATIVE_I2P
 const std::string pstrI2PSeed[] =
 {
-    "SVAxpjZzKn~HjvuqpoX5Y948CQnrPpw~9Y9n7itkniijx3NbgTQGJVmZJoc1ERXE87CqcLeeaWtAwqIwhYXL5Y5XkvaUA"
-    "lAA5BD-9afCmyP42rtEluQLBAprd70UuN20ujuVm0HPyKcIyezphMHsK~GbYMNFiyTz8ko~Kd2wHaeXKWQh6pXyjQJzT4"
-    "Bwcv1Y9JtPC5b1P5VpwQaLlMJJvblRi8jbRAbimjsxxrMSG6YX8Ks99tsdnQ6YOHGzTPoGpHFgBiROSYwXtC~BbFSv0Xf"
-    "hmN17ZfG6ZCXTbp-xVs-4txSyS~hnS9dL9xHWIv9MNbJzZhI7YztxWgMR3ZNMwR-W2fUeHAcZusmvbm3r-NpIC0O0p9LD"
-    "Dcu7Vxszk~QD~qylFfIT3j8kwu4RDExgqyelVdXVVSlyriHWoIdt9BklqwI1dbAEoLAfG7IZ3921dP4-MH7~AS8Jn3foN"
-    "e8CAUvu2baRNRIAu75GknCFV5gGIuRRJjFNnrt~vaZfIQP6AAAA",
+    "SVAxpjZzKn~HjvuqpoX5Y948CQnrPpw~9Y9n7itkniijx3NbgTQGJVmZJoc1ERXE87CqcLeeaWtAwqIwhYXL5Y5XkvaUAlAA5BD-9afCmyP42rtEluQLBAprd70UuN20u"
+    "juVm0HPyKcIyezphMHsK~GbYMNFiyTz8ko~Kd2wHaeXKWQh6pXyjQJzT4Bwcv1Y9JtPC5b1P5VpwQaLlMJJvblRi8jbRAbimjsxxrMSG6YX8Ks99tsdnQ6YOHGzTPoGpH"
+    "FgBiROSYwXtC~BbFSv0XfhmN17ZfG6ZCXTbp-xVs-4txSyS~hnS9dL9xHWIv9MNbJzZhI7YztxWgMR3ZNMwR-W2fUeHAcZusmvbm3r-NpIC0O0p9LDDcu7Vxszk~QD~qy"
+    "lFfIT3j8kwu4RDExgqyelVdXVVSlyriHWoIdt9BklqwI1dbAEoLAfG7IZ3921dP4-MH7~AS8Jn3foNe8CAUvu2baRNRIAu75GknCFV5gGIuRRJjFNnrt~vaZfIQP6AAAA",
 
-    "6KDnZnTsXqP4Av1re1kIRICjdXX3gnpKl97L6ewnJ~0GNVSRm1mz4dYLo6oc4yU54PaxvenQOZ04pT8xrcl99GCznuBE9"
-    "vTKjnmF2A5zh9NAkOTKPdoRq9sd4R6Gyh26ffCcgXzMIanHq8OKIneBB9WmIImshvp~VKdnQkB9r6LLDfHBoUBB~1V3sP"
-    "C8lWxvBpdXHiDofq6tS~hlULjzno9NjYXg6fuk8QMrPxvzi45jaThDDvuK7G4F3JLkvAgrdjoYtVwvOk52yUQKElSB5FN"
-    "p~RvI0Gr7kaeappWSqSkCe5AgLPqI194V7Nt~GwP1MzZLDFoVXB5fhQZ-Wza55Xzh2~l5TgBndaPvo~kT7cV8Gl8RxpUz"
-    "8J-V3q3L2~7xLyTNFGvZahGIh2Sl6npEl876iXFJYfZXVGi8G5BCxhUVM03ycNdpzaGyqOT0e1uMMzrXYrS6zGQ~AY05~"
-    "8Bza6ulEJ1XNqQCkq-5mtcN9Exe-M16XWhpv-zECnr46xKSAAAA",
+    "6KDnZnTsXqP4Av1re1kIRICjdXX3gnpKl97L6ewnJ~0GNVSRm1mz4dYLo6oc4yU54PaxvenQOZ04pT8xrcl99GCznuBE9vTKjnmF2A5zh9NAkOTKPdoRq9sd4R6Gyh26f"
+    "fCcgXzMIanHq8OKIneBB9WmIImshvp~VKdnQkB9r6LLDfHBoUBB~1V3sPC8lWxvBpdXHiDofq6tS~hlULjzno9NjYXg6fuk8QMrPxvzi45jaThDDvuK7G4F3JLkvAgrdj"
+    "oYtVwvOk52yUQKElSB5FNp~RvI0Gr7kaeappWSqSkCe5AgLPqI194V7Nt~GwP1MzZLDFoVXB5fhQZ-Wza55Xzh2~l5TgBndaPvo~kT7cV8Gl8RxpUz8J-V3q3L2~7xLyT"
+    "NFGvZahGIh2Sl6npEl876iXFJYfZXVGi8G5BCxhUVM03ycNdpzaGyqOT0e1uMMzrXYrS6zGQ~AY05~8Bza6ulEJ1XNqQCkq-5mtcN9Exe-M16XWhpv-zECnr46xKSAAAA",
 
-    "K4bxj-QLzTqA5kBiuawTBGOm5Z9VIGIFfC2mwwQrgmVtf94f9FgFeiglXQ6GF3Zls4aoH3pHEdeWe7hr2Y9q6zUj9tIxP"
-    "Ld2u70nVUCKx6pphO5B7vanlBRoivozwYPvdhfX~skKOE1YSIqvWX1RM3fUN1HXh1plL75-UlB-~VIB4usqBfxv5Qs5W8"
-    "QK7AX0KOoFZ~2qg70VUrxbbc-sSyK6-ZDCsDKvUqYbIfG0XeR6U8eiCYLCV9VRkUK1RLSFXYw-KP-GnMNmoVbREIzpvJy"
-    "dgGK0acKhBY9WEoEcrFflXJedD95opNWYYX~ZGO-psM7dY-BMUcRY5bVlAPpj7DuXcqK82d9D3iLrDDlyt3P-I1GprAp0"
-    "O14vYJqG3RoDcdMxOSpiuVKnq3GzqrxhcIFA2SK9KYVSNoEOsz1dM49bmw0DEzx2IGMHlPQ1ctmQIbkBS9i6wr3el~1Lr"
-    "PrcwRoVsdekVD4ZRD42YA61OqblXM3iqMVFe8U1CIa94oiaAAAA",
+    "K4bxj-QLzTqA5kBiuawTBGOm5Z9VIGIFfC2mwwQrgmVtf94f9FgFeiglXQ6GF3Zls4aoH3pHEdeWe7hr2Y9q6zUj9tIxPLd2u70nVUCKx6pphO5B7vanlBRoivozwYPvd"
+    "hfX~skKOE1YSIqvWX1RM3fUN1HXh1plL75-UlB-~VIB4usqBfxv5Qs5W8QK7AX0KOoFZ~2qg70VUrxbbc-sSyK6-ZDCsDKvUqYbIfG0XeR6U8eiCYLCV9VRkUK1RLSFXY"
+    "w-KP-GnMNmoVbREIzpvJydgGK0acKhBY9WEoEcrFflXJedD95opNWYYX~ZGO-psM7dY-BMUcRY5bVlAPpj7DuXcqK82d9D3iLrDDlyt3P-I1GprAp0O14vYJqG3RoDcdM"
+    "xOSpiuVKnq3GzqrxhcIFA2SK9KYVSNoEOsz1dM49bmw0DEzx2IGMHlPQ1ctmQIbkBS9i6wr3el~1LrPrcwRoVsdekVD4ZRD42YA61OqblXM3iqMVFe8U1CIa94oiaAAAA",
 
-    "Oonb8SSUV6Y1jYVl6dV~4I2oEpMqAWPnc5IyhcKT-oqEkeEfelJKFn6KXfwOSoavWNj0GOvr~EPnklwzf13HwvKixWe2E"
-    "Lz7BkMJZJyFmJ37BTDDUg51828Xu1DvOVpE4-OTetCm6QD-3dJAIDrbwCE5q9IyknQqD9qSHBc3QqBKSZMbCBw0kKcN~e"
-    "c7PDUO3gLZnyfKLVcNXFay-kMiwSc4iAUsxCJed~uhLEg2pzavso0a9k39rVYgtgqqJ3sOKYpbGhqMaAiNk5ndp4LQs81"
-    "OOxLpRT5Rtz7Vtnj7bW3pG5vyNNmQfyywDm8DArEwEMSjeWvF6pzvOS~gZCvsNkJ05h~LKohbvaViujxTUojTRfqKACCI"
-    "FxY2uDfbkkUzjvKV9mML2K-Z8Kmg2AYmYrKOiU-WBzNUH8PqCm3JXjdr~pG9ZuSQONhl5jZEGsgaGqtA7Mum7R8Z2Hj5p"
-    "qDKYnEw2qqu61JsYePxw89GjEVk1qUZR1NKICLIlAcvoJepAAAA",
+    "Oonb8SSUV6Y1jYVl6dV~4I2oEpMqAWPnc5IyhcKT-oqEkeEfelJKFn6KXfwOSoavWNj0GOvr~EPnklwzf13HwvKixWe2ELz7BkMJZJyFmJ37BTDDUg51828Xu1DvOVpE4"
+    "-OTetCm6QD-3dJAIDrbwCE5q9IyknQqD9qSHBc3QqBKSZMbCBw0kKcN~ec7PDUO3gLZnyfKLVcNXFay-kMiwSc4iAUsxCJed~uhLEg2pzavso0a9k39rVYgtgqqJ3sOKY"
+    "pbGhqMaAiNk5ndp4LQs81OOxLpRT5Rtz7Vtnj7bW3pG5vyNNmQfyywDm8DArEwEMSjeWvF6pzvOS~gZCvsNkJ05h~LKohbvaViujxTUojTRfqKACCIFxY2uDfbkkUzjvK"
+    "V9mML2K-Z8Kmg2AYmYrKOiU-WBzNUH8PqCm3JXjdr~pG9ZuSQONhl5jZEGsgaGqtA7Mum7R8Z2Hj5pqDKYnEw2qqu61JsYePxw89GjEVk1qUZR1NKICLIlAcvoJepAAAA",
 
-    "dFXwn-7-weqcaiOg97G~2tjztZmjB3c3fgziSwWA9yk4cAudQhlKCNkk~sCUItL0BkDdNGM9CLq06xqj5FTg7zAdaPREq"
-    "v1XicuLCTYfUHpS8qlTfCtIjQkvFBL3F7FtvmiPcsF0eEysNfhaaGDRzWpL0DSWD42GF-M2LUGshHUjxxV48fl9oHPrsq"
-    "WvHlRI4ZuxL2Urp6DDRwVbe5LrjRMsr0aCr6qnzof8259r2QJKwQe7OfKxedM0hfvfUwiAUV95lcSe0E3pG21GBJ0ho8F"
-    "NQjlY92pDqKsvc~0c9JngIvrGO2oEPQ6FMgJLdOCSv58I50DbiWub894veX-i1JGe4N4ih9qC3L5PK6iUGB3AOd~QhqND"
-    "ALb8qk5tped-X-2eSBlAcUK94ae-P4peoHyLiVS47rw79ToNzGBG0WztLaTXbAAMfEqKEC7knO8PK02WHKIpGs26NiQt6"
-    "B~OLit3pHSwaeQkc4zU5PMNxgcHJf6kHaaq9JNtp6cE~QkqAAAA",
+    "dFXwn-7-weqcaiOg97G~2tjztZmjB3c3fgziSwWA9yk4cAudQhlKCNkk~sCUItL0BkDdNGM9CLq06xqj5FTg7zAdaPREqv1XicuLCTYfUHpS8qlTfCtIjQkvFBL3F7Ftv"
+    "miPcsF0eEysNfhaaGDRzWpL0DSWD42GF-M2LUGshHUjxxV48fl9oHPrsqWvHlRI4ZuxL2Urp6DDRwVbe5LrjRMsr0aCr6qnzof8259r2QJKwQe7OfKxedM0hfvfUwiAUV"
+    "95lcSe0E3pG21GBJ0ho8FNQjlY92pDqKsvc~0c9JngIvrGO2oEPQ6FMgJLdOCSv58I50DbiWub894veX-i1JGe4N4ih9qC3L5PK6iUGB3AOd~QhqNDALb8qk5tped-X-2"
+    "eSBlAcUK94ae-P4peoHyLiVS47rw79ToNzGBG0WztLaTXbAAMfEqKEC7knO8PK02WHKIpGs26NiQt6B~OLit3pHSwaeQkc4zU5PMNxgcHJf6kHaaq9JNtp6cE~QkqAAAA",
 
-    "QAQ8YlT1yTtmXEXnw3dSm2a-YnSGSJQqKK95Pj-zesthHtnW8nhADs2oUGS05-iQJADfzVhCnIqAYdkR8xXE5oc5MsBm3"
-    "QMiefixFAn55WWLboeSmJR9Y0PjI1nDEv-~vkY-hBCAkFY98QpXUOWx9KraeL~LTcmPlAOE6zyAD7TxHaIrhDrPySstXR"
-    "FdZXTi5uZOQIV2fqUq4n1pZNdpA6IogOUcgTpmhK6JVMm~TzJMpaVz8GaTGdoNmECclslUYTXIBmIG5FuQlzBfNCNgDDs"
-    "wBbwKZ4s7z2hGaDb8lVlRTr-4Sivvhl9NIIl-Qzn4mpxluLdXLgHzPXxY6GANxEj~wbU-K0y2oSEIgiW333qQzv4XAnOE"
-    "NYQsg8W41kbfZKUyLyrD-K9G7oJ1dpLliGrTGdGiD~QFpQgs1Hmzs9NEz~XFFN7eHFImTWyVbwj61NMtZ9rm5Zr6mzPmu"
-    "U7Ydm9gtznyYJFZazuDcPWNdKojlD0AW-qUDBiPRjxpqGz2AAAA"
+    "QAQ8YlT1yTtmXEXnw3dSm2a-YnSGSJQqKK95Pj-zesthHtnW8nhADs2oUGS05-iQJADfzVhCnIqAYdkR8xXE5oc5MsBm3QMiefixFAn55WWLboeSmJR9Y0PjI1nDEv-~v"
+    "kY-hBCAkFY98QpXUOWx9KraeL~LTcmPlAOE6zyAD7TxHaIrhDrPySstXRFdZXTi5uZOQIV2fqUq4n1pZNdpA6IogOUcgTpmhK6JVMm~TzJMpaVz8GaTGdoNmECclslUYT"
+    "XIBmIG5FuQlzBfNCNgDDswBbwKZ4s7z2hGaDb8lVlRTr-4Sivvhl9NIIl-Qzn4mpxluLdXLgHzPXxY6GANxEj~wbU-K0y2oSEIgiW333qQzv4XAnOENYQsg8W41kbfZKU"
+    "yLyrD-K9G7oJ1dpLliGrTGdGiD~QFpQgs1Hmzs9NEz~XFFN7eHFImTWyVbwj61NMtZ9rm5Zr6mzPmuU7Ydm9gtznyYJFZazuDcPWNdKojlD0AW-qUDBiPRjxpqGz2AAAA",
+
+    "XIaesnSrNwpvj6NS1yGq5NBOyiO91kgFL~BC3LPwH3pVJnYP1BCVvqMOEea33~I43TBX1ICbAVnFPml4pEsN-W-fiQ2NtgkJEGIbokR8i3i51J45GeaTok6VR2Cx65N2z"
+    "4OLktnY7YKy0jLT6RFC0CbfP01MWTMaBh1PPzFMzrkNcjxK4itNcWItRIfyW5QnCfN9xUwMhN94jKsZb0hvSHsbd71dlWWQS-6sSktmOMxBbVNPuX2pkmL-z~5VUhoUUc"
+    "i7DSDWVIib9OSwKhU-xtGYEwzTTlXOEL0dQoZgHqsosdov8TP0oD1vfyNWywlA0UWU0W7~B53JAeCEaqSCbQ01A8EnA2KPeXlZ0NZxunihquH-L3eAb-ZjhfGjjJJ5Wyd"
+    "CdMomNIXZWLA~l3V4wu5m3ppnUUTRhLJhJpRqrzGnkfalN8twuKcXkEiQd0l2YDfjq-NbdZ-rhqR-oiOzPX0g3mRQ59JDvKQ6kIk0EHhxq01Jk~XEpKQtRcQJG8QRAAAA",
+
+    // "uyf3il6zs6dopiowjo4mpfn3463ixvwk2oolmclyhurxhb5n76aa.b32.i2p",
+
+    "v6GTR0ayjktJocOANADrXscTtwcvB19EwmuMpiaST1znOMOcDUhwVmCW8KoMEU6vRBXGmSy4inifWCrsRHXTN5WD0QGEHsbBf3OkhZQ89wcxy3X3U9r8TaeF129UDRDcH"
+    "9qVg8vtZLnqrhJa6ZUdIkT9iZSgGVuneTdj9-kU0G9i1Ew3kxGIHJDEXKQ2G1i1R5aQsY1O6VhCBvzqTfT2an8TqphoVC1lKJh42Ep37kWlSeXzTC618y1B1EeTpLuIw9"
+    "WDj-xxABWVPyTgxAH-NjjrWtdXrkgHVWDe4ZsU-ii0enaIGS9MvYMu5emYdilTLEX4JD3giqEtcxCE3jhJqSC2HO-K9YWuJkRVBix261C9UaRcO3zqOK4ywBNM6LqkVQ5"
+    "tyRg4CGy565~Wl-texl0FZLiWIfqUG07txmGHWS1OvsvGbm24ghsxn63FT8yEWgvB7glAIZuwhPZ~hJ~zthbs-5AGeurNlrX9PZhrPXTTVh8XhnYjdtLa-QOLg2tgAAAA"
 };
 #endif
 
@@ -1973,10 +2000,31 @@ bool BindListenNativeI2P(SOCKET& hSocket)
     hSocket = I2PSession::Instance().accept(false);
     if (!SetSocketOptions(hSocket) || hSocket == INVALID_SOCKET)
         return false;
-    CService addrBind(I2PSession::Instance().getMyAddress(), 0);
+    CService addrBind(I2PSession::Instance().getMyDestination().pub, 0);
     if (addrBind.IsRoutable() && fDiscover)
         AddLocal(addrBind, LOCAL_BIND);
     return true;
+}
+
+bool IsI2POnly()
+{
+//    bool i2pOnly = false;
+//    if (mapArgs.count("-onlynet"))
+//    {
+//        const std::vector<std::string>& onlyNets = mapMultiArgs["-onlynet"];
+//        i2pOnly = (onlyNets.size() == 1 && onlyNets[0] == NATIVE_I2P_NET_STRING);
+//    }
+//    return i2pOnly;
+
+    bool i2pOnly = NET_MAX > 0; // if NET_MAX == 0 we set i2pOnly to false and exit
+    for (int n = 0; n < NET_MAX; n++)
+    {
+        Network net = (Network)n;
+        if (net == NET_UNROUTABLE)
+            continue;
+        i2pOnly &= ((net == NET_NATIVE_I2P) != IsLimited(net)); // isI2P xor IsLimited
+    }
+    return i2pOnly;
 }
 #endif
 
