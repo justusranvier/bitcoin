@@ -156,7 +156,7 @@ ifdef USE_NATIVE_I2P
 	OBJS += obj/i2p.o
 endif
 
-all: i2psam bitcoind
+all: bitcoind
 
 test check: test_bitcoin FORCE
 	./test_bitcoin
@@ -198,7 +198,7 @@ obj/%.o: %.cpp
 	  rm -f $(@:%.o=%.d)
 
 ifdef USE_NATIVE_I2P
-bitcoind: i2psam $(OBJS:obj/%=obj/%)
+bitcoind: sam $(OBJS:obj/%=obj/%)
 	$(LINK) $(xCXXFLAGS) -o $@ $(OBJS) $(xLDFLAGS) $(LIBS)
 else
 bitcoind: $(OBJS:obj/%=obj/%)
@@ -206,7 +206,7 @@ bitcoind: $(OBJS:obj/%=obj/%)
 endif
 	
 ifdef USE_NATIVE_I2P
-i2psam:
+sam:
 	$(MAKE) -C ./i2psam -f makefile.unix
 endif
 
