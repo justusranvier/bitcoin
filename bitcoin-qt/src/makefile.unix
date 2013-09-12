@@ -156,7 +156,7 @@ ifdef USE_NATIVE_I2P
 	OBJS += obj/i2p.o
 endif
 
-all: bitcoind
+all: i2psam bitcoind
 
 test check: test_bitcoin FORCE
 	./test_bitcoin
