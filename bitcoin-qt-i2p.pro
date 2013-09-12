@@ -3,5 +3,5 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 SUBDIRS += \
-    i2psam \
+    bitcoin-qt/src/i2psam \
     bitcoin-qt
