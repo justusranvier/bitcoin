@@ -94,7 +94,7 @@ check: first
 ####### Compile
 
 i2psam.o: i2psam.cpp i2psam.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o i2psam.o i2psam.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o libi2psam.o i2psam.cpp
 
 ####### Install
 
