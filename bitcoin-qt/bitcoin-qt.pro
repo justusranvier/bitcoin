@@ -148,7 +148,7 @@ contains(DEFINES, USE_NATIVE_I2P) {
     geni2pbuild.commands = cd $$PWD; /bin/sh share/inc_build_number.sh src/i2pbuild.h bitcoin-qt-build-number
     geni2pbuild.target = src/i2pbuild.h
     gensam.depends = FORCE
-    gensam.commands = cd $$PWD/src/i2psam && make -f makefile.unix
+    gensam.commands = cd $$PWD/src/i2psam && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libi2psam.a
     gensam.target = src/i2psam/libi2psam.a
     PRE_TARGETDEPS += src/i2pbuild.h
     QMAKE_EXTRA_TARGETS += geni2pbuild
