@@ -147,8 +147,12 @@ contains(DEFINES, USE_NATIVE_I2P) {
     geni2pbuild.depends = FORCE
     geni2pbuild.commands = cd $$PWD; /bin/sh share/inc_build_number.sh src/i2pbuild.h bitcoin-qt-build-number
     geni2pbuild.target = src/i2pbuild.h
+    gensam.depends = FORCE
+    gensam.commands = cd $$PWD/src/i2psam && make -f makefile.unix
+    gensam.target = src/i2psam/libi2psam.a
     PRE_TARGETDEPS += src/i2pbuild.h
     QMAKE_EXTRA_TARGETS += geni2pbuild
+    QMAKE_EXTRA_TARGETS += gensam
 }
 
 QMAKE_CXXFLAGS_WARN_ON = -fdiagnostics-show-option -Wall -Wextra -Wformat -Wformat-security -Wno-unused-parameter -Wstack-protector
